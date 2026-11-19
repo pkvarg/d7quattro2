@@ -1,0 +1,52 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Draw the line once when the page loads. */
+  animated?: boolean;
+  class?: string;
+}
+
+const { render = true, animated = false, class: className } = Astro.props;
+---
+
+{render && (
+  <svg
+    class:list={["roofline_wrap", animated && "animated", className]}
+    viewBox="0 0 420 26"
+    aria-hidden="true"
+  >
+    <polyline points="0,24 0,14 120,14 120,8 260,8 260,2 420,2 420,24" />
+  </svg>
+)}
+
+<style is:global>
+  @layer components {
+    .roofline_wrap {
+      display: block;
+      width: min(26rem, 80%);
+      height: 1.625rem;
+      overflow: visible;
+      color: var(--heading-accent);
+
+      & polyline {
+        fill: none;
+        stroke: currentcolor;
+        stroke-width: 2;
+        vector-effect: non-scaling-stroke;
+        filter: drop-shadow(0 0 0.375rem currentcolor);
+      }
+
+      &.animated polyline {
+        stroke-dasharray: 520;
+        animation: roofline-on 2.2s ease-out 0.3s backwards;
+      }
+    }
+
+    @keyframes roofline-on {
+      from {
+        stroke-dashoffset: 520;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,136 @@
+---
+import { Image } from "astro:assets";
+import Button from "@/components/Button.astro";
+import ButtonWrapper from "@/components/wrapper/ButtonWrapper.astro";
+import Roofline from "@/components/content/Roofline.astro";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Short line above the heading. */
+  kicker?: string;
+  /** Page heading. */
+  heading: string;
+  /** Body text. */
+  text?: string;
+  /** Button label. Omit to hide the button. */
+  buttonLabel?: string;
+  /** Button destination. */
+  buttonHref?: string;
+  /** Background image. */
+  image: ImageMetadata;
+  /** Image alt text. Omit for decorative images. */
+  imageAlt?: string;
+}
+
+const {
+  render = true,
+  kicker,
+  heading,
+  text,
+  buttonLabel,
+  buttonHref,
+  image,
+  imageAlt = "",
+} = Astro.props;
+---
+
+{render && heading && (
+  <section class="hero-home_wrap theme-dark">
+    <Image
+      class="hero-home_image"
+      src={image}
+      alt={imageAlt}
+      widths={[768, 1280, 1920, image.width]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero-home_shade" />
+    <div class="hero-home_content">
+      <Roofline animated />
+      {kicker && <p class="hero-home_kicker text-style-large">{kicker}</p>}
+      <h1 class="hero-home_title text-style-h1">{heading}</h1>
+      {text && <p class="hero-home_text text-style-large">{text}</p>}
+      {buttonLabel && (
+        <ButtonWrapper>
+          <Button element="link" href={buttonHref}>
+            {buttonLabel}
+          </Button>
+        </ButtonWrapper>
+      )}
+    </div>
+  </section>
+)}
+
+<style is:global>
+  @layer components {
+    .hero-home_wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 100svh;
+      padding: calc(var(--nav-height) + var(--space-8)) var(--site-margin)
+        var(--space-8);
+      overflow: clip;
+    }
+
+    .hero-home_image {
+      position: absolute;
+      inset: auto 0 0;
+      height: 120%;
+      object-position: center bottom;
+    }
+
+    .hero-home_shade {
+      --_side: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--dark-900) 55%, transparent) 0%,
+        color-mix(in srgb, var(--dark-900) 35%, transparent) 100%
+      );
+      position: absolute;
+      inset: 0;
+      background:
+        var(--_side),
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--dark-900) 80%, transparent) 0%,
+          color-mix(in srgb, var(--dark-900) 8%, transparent) 30%,
+          color-mix(in srgb, var(--dark-900) 34%, transparent) 60%,
+          color-mix(in srgb, var(--dark-900) 96%, transparent) 100%
+        );
+
+      @media (width >= 48rem) {
+        --_side: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--dark-900) 72%, transparent) 0%,
+          transparent 62%
+        );
+      }
+    }
+
+    .hero-home_content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-5);
+      width: 100%;
+      max-width: var(--max-width-main);
+      margin-inline: auto;
+    }
+
+    .hero-home_kicker {
+      color: var(--heading-accent);
+    }
+
+    .hero-home_title {
+      max-width: 16ch;
+    }
+
+    .hero-home_text {
+      max-width: 50ch;
+    }
+  }
+</style>

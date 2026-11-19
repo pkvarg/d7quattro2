@@ -1,9 +1,11 @@
 ---
-import Icon from "@/components/media/Icon.astro";
-import logo from "@/assets/logo/logo.svg";
+import { Image } from "astro:assets";
+import Roofline from "@/components/content/Roofline.astro";
+import logo from "@/assets/logo/d7bau-white.png";
 import { SITE_NAME } from "@/consts.ts";
 import { localizePath, toLocale } from "@/i18n/locales.ts";
 import { useTranslations } from "@/i18n/ui.ts";
+import { getMessages } from "@/i18n/messages.ts";
 
 interface Props {
   /** Set to `false` to omit the component. */
@@ -14,34 +16,41 @@ const { render = true } = Astro.props;
 
 const locale = toLocale(Astro.currentLocale);
 const t = useTranslations(locale);
+const m = getMessages(locale);
+const home = localizePath(locale);
 ---
 
 {render && (
-  <footer class="footer_wrap">
+  <footer class="footer_wrap theme-dark">
     <div class="footer_inner">
       <div class="footer_top">
-        <a
-          class="footer_logo"
-          href={localizePath(locale)}
-          aria-label={SITE_NAME}
-        >
-          <Icon src={logo} variant="full-width" />
-        </a>
+        <div class="footer_brand">
+          <Roofline />
+          <a class="footer_logo text-style-h4" href={home}>
+            {SITE_NAME}
+          </a>
+          <p class="footer_tagline">{m.footerTagline}</p>
+        </div>
         <nav aria-label={t("nav.footer")}>
           <ul class="footer_links">
             <li>
-              <a class="footer_link" href={localizePath(locale)}>
-                {t("nav.home")}
+              <a class="footer_link" href={`${home}#project`}>
+                {m.navProject}
               </a>
             </li>
             <li>
-              <a class="footer_link" href={localizePath(locale, "blog")}>
-                {t("nav.blog")}
+              <a class="footer_link" href={`${home}#prices`}>
+                {m.navPrices}
               </a>
             </li>
             <li>
-              <a class="footer_link" href="/example-components">
-                Example Components
+              <a class="footer_link" href={`${home}#about`}>
+                {m.navAboutUs}
+              </a>
+            </li>
+            <li>
+              <a class="footer_link" href={`${home}#contact`}>
+                {m.navContact}
               </a>
             </li>
           </ul>
@@ -50,8 +59,34 @@ const t = useTranslations(locale);
       <div class="footer_bottom">
         <p class="footer_copyright text-style-small">
           &copy; <span id="year">{new Date().getFullYear()}</span>&#160;
-          {SITE_NAME}
+          {m.footerCopyright}
         </p>
+        <ul class="footer_links">
+          <li>
+            <a class="footer_link" href={localizePath(locale, "gdpr")}>
+              {m.footerPrivacyPolicy}
+            </a>
+          </li>
+          <li>
+            <a class="footer_link" href={localizePath(locale, "impressum")}>
+              {m.footerTermsOfService}
+            </a>
+          </li>
+          <li>
+            <button class="footer_link" type="button" data-consent-open>
+              {m.footerCookiePolicy}
+            </button>
+          </li>
+        </ul>
+        <a
+          class="footer_company"
+          href="https://d7bau.at"
+          target="_blank"
+          rel="noopener"
+          aria-label="D7 BAU GmbH"
+        >
+          <Image src={logo} alt="" width={120} />
+        </a>
       </div>
     </div>
   </footer>
@@ -82,21 +117,25 @@ const t = useTranslations(locale);
       max-width: var(--max-width-main);
       display: flex;
       flex-direction: column;
-      gap: var(--space-6);
+      gap: var(--space-7);
     }
 
     .footer_top {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
-      gap: var(--space-4) var(--space-6);
+      gap: var(--space-6);
+    }
+
+    .footer_brand {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      max-width: 30rem;
     }
 
     .footer_logo {
-      display: block;
-      width: 7.5rem;
-      max-width: 100%;
       transition: opacity var(--hover-duration) var(--hover-ease);
       @media (hover: hover) {
         &:hover {
@@ -105,17 +144,22 @@ const t = useTranslations(locale);
       }
     }
 
+    .footer_tagline {
+      color: var(--text-2);
+    }
+
     .footer_links {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: var(--space-4);
+      gap: var(--space-2) var(--space-4);
       font-size: var(--text-small);
       font-weight: var(--primary-medium);
     }
 
     .footer_link {
       color: var(--text-2);
+      font-weight: inherit;
       text-decoration: none;
       transition: color var(--hover-duration) var(--hover-ease);
       @media (hover: hover) {
@@ -126,12 +170,27 @@ const t = useTranslations(locale);
     }
 
     .footer_bottom {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4) var(--space-6);
       padding-top: var(--space-4);
       border-top: var(--border-width) solid var(--border);
     }
 
     .footer_copyright {
       color: var(--text-2);
+    }
+
+    .footer_company {
+      width: 6rem;
+      transition: opacity var(--hover-duration) var(--hover-ease);
+      @media (hover: hover) {
+        &:hover {
+          opacity: 0.6;
+        }
+      }
     }
   }
 </style>

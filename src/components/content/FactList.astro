@@ -1,0 +1,51 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Figures with the label each one belongs to. */
+  items: { value: string; label: string }[];
+  class?: string;
+}
+
+const { render = true, items, class: className } = Astro.props;
+---
+
+{render && items.length > 0 && (
+  <dl class:list={["fact-list_wrap", className]}>
+    {items.map((item) => (
+      <div class="fact-list_item">
+        <dt class="fact-list_label text-style-small">{item.label}</dt>
+        <dd class="fact-list_value text-style-h4">{item.value}</dd>
+      </div>
+    ))}
+  </dl>
+)}
+
+<style is:global>
+  @layer components {
+    .fact-list_wrap {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 var(--space-5);
+      width: 100%;
+      margin-top: var(--space-5);
+    }
+
+    .fact-list_item {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: var(--space-2);
+      padding-block: var(--space-3);
+      border-top: var(--border-width) solid
+        color-mix(in srgb, var(--heading-accent) 45%, transparent);
+    }
+
+    .fact-list_value {
+      color: var(--heading-accent);
+    }
+
+    .fact-list_label {
+      color: var(--text-2);
+    }
+  }
+</style>

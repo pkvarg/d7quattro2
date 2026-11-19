@@ -1,0 +1,82 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Document groups in display order. */
+  groups: { title: string; items: { name: string; href: string }[] }[];
+  /** Label announced with each link. */
+  openLabel: string;
+  class?: string;
+}
+
+const { render = true, groups, openLabel, class: className } = Astro.props;
+---
+
+{render && groups.length > 0 && (
+  <div class:list={["document-list_wrap", className]}>
+    {groups.map((group) => (
+      <div class="document-list_group">
+        <h3 class="document-list_title text-style-h5">{group.title}</h3>
+        <ul class="document-list_items">
+          {group.items.map((item) => (
+            <li>
+              <a
+                class="document-list_link"
+                href={item.href}
+                target="_blank"
+                rel="noopener"
+                aria-label={`${item.name}, ${openLabel}`}
+              >
+                <span>{item.name}</span>
+                <span class="document-list_type text-style-small">PDF</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+)}
+
+<style is:global>
+  @layer components {
+    .document-list_wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-6) var(--site-gutter);
+      width: 100%;
+
+      @media (width >= 48rem) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .document-list_group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .document-list_link {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding-block: var(--space-3);
+      border-top: var(--border-width) solid var(--border);
+      transition:
+        border-color var(--hover-duration) var(--hover-ease),
+        color var(--hover-duration) var(--hover-ease);
+      @media (hover: hover) {
+        &:hover {
+          border-top-color: var(--heading-accent);
+          color: var(--heading-accent);
+        }
+      }
+    }
+
+    .document-list_type {
+      color: var(--text-2);
+    }
+  }
+</style>

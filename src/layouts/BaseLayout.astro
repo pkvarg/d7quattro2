@@ -4,6 +4,7 @@ import BaseHead from "@/components/utility/BaseHead.astro";
 import SkipLink from "@/components/global/SkipLink.astro";
 import Nav from "@/components/global/Nav.astro";
 import Footer from "@/components/global/Footer.astro";
+import CookieConsent from "@/components/global/CookieConsent.astro";
 import type { SeoProps } from "@/types.ts";
 import { toLocale, type Locale } from "@/i18n/locales.ts";
 
@@ -20,12 +21,7 @@ type Props = SeoProps & {
   translations?: readonly Locale[];
 };
 
-const {
-  theme = "inherit",
-  overlap = false,
-  translations,
-  ...seo
-} = Astro.props;
+const { theme = "dark", overlap = false, translations, ...seo } = Astro.props;
 
 const locale = toLocale(Astro.currentLocale);
 ---
@@ -43,5 +39,6 @@ const locale = toLocale(Astro.currentLocale);
       <slot />
     </main>
     <Footer />
+    <CookieConsent />
   </body>
 </html>

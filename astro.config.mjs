@@ -21,18 +21,22 @@ export default defineConfig({
   ],
   fonts: [
     {
-      name: "Inter",
-      cssVariable: "--font-inter",
-      provider: fontProviders.local(),
-      options: {
-        variants: [
-          {
-            weight: 400,
-            style: "normal",
-            src: ["./src/assets/fonts/inter-regular.woff2"],
-          },
-        ],
-      },
+      name: "Gilda Display",
+      cssVariable: "--font-gilda",
+      provider: fontProviders.google(),
+      weights: [400],
+      styles: ["normal"],
+      subsets: ["latin", "latin-ext"],
+      fallbacks: ["Georgia", "serif"],
+    },
+    {
+      name: "Figtree",
+      cssVariable: "--font-figtree",
+      provider: fontProviders.google(),
+      weights: [400, 500, 600],
+      styles: ["normal"],
+      subsets: ["latin", "latin-ext"],
+      fallbacks: ["system-ui", "sans-serif"],
     },
   ],
   vite: { build: { cssTarget: "safari15.4" } },

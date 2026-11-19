@@ -1,0 +1,127 @@
+---
+import Button from "@/components/Button.astro";
+import { ANALYTICS_SRC, ANALYTICS_WEBSITE_ID } from "@/consts.ts";
+import { localizePath, toLocale } from "@/i18n/locales.ts";
+import { getMessages } from "@/i18n/messages.ts";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+}
+
+const { render = true } = Astro.props;
+
+const locale = toLocale(Astro.currentLocale);
+const m = getMessages(locale);
+---
+
+{render && (
+  <aside
+    class="cookie-consent_wrap theme-dark"
+    aria-label={m.footerCookiePolicy}
+    data-analytics-src={ANALYTICS_SRC}
+    data-analytics-id={ANALYTICS_WEBSITE_ID}
+    hidden
+  >
+    <p class="cookie-consent_text text-style-small">
+      {m.cookies}{" "}
+      <a href={`${localizePath(locale, "gdpr")}#cookies`}>
+        {m.footerPrivacyPolicy}
+      </a>
+    </p>
+    <div class="cookie-consent_actions">
+      <Button data-consent="granted">{m.cookiesAgree}</Button>
+      <Button emphasis="secondary" data-consent="denied">
+        {m.cookiesDisagree}
+      </Button>
+    </div>
+  </aside>
+)}
+
+<script>
+  const KEY = "d7quattro-consent";
+  const banner = document.querySelector<HTMLElement>(".cookie-consent_wrap");
+
+  const read = () => {
+    try {
+      return localStorage.getItem(KEY);
+    } catch {
+      return null;
+    }
+  };
+
+  const write = (value: string) => {
+    try {
+      localStorage.setItem(KEY, value);
+    } catch {
+      return;
+    }
+  };
+
+  const loadAnalytics = () => {
+    const src = banner?.dataset.analyticsSrc;
+    const id = banner?.dataset.analyticsId;
+    if (!src || !id || document.querySelector(`script[src="${src}"]`)) return;
+
+    const script = document.createElement("script");
+    script.defer = true;
+    script.src = src;
+    script.dataset.websiteId = id;
+    document.head.append(script);
+  };
+
+  if (banner) {
+    const choice = read();
+    if (choice === "granted") loadAnalytics();
+    if (!choice) banner.hidden = false;
+
+    banner.querySelectorAll<HTMLElement>("[data-consent]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const value = button.dataset.consent ?? "denied";
+        write(value);
+        banner.hidden = true;
+        if (value === "granted") loadAnalytics();
+      });
+    });
+
+    document
+      .querySelectorAll<HTMLElement>("[data-consent-open]")
+      .forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+          banner.hidden = false;
+          banner.querySelector<HTMLElement>("[data-consent]")?.focus();
+        });
+      });
+  }
+</script>
+
+<style is:global>
+  @layer components {
+    .cookie-consent_wrap {
+      position: fixed;
+      inset: auto var(--site-margin) var(--space-4) auto;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      width: min(28rem, calc(100% - var(--site-margin) * 2));
+      padding: var(--space-4);
+      background-color: var(--background-2);
+      border: var(--border-width) solid var(--border);
+
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    .cookie-consent_text {
+      text-box: none;
+    }
+
+    .cookie-consent_actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+  }
+</style>

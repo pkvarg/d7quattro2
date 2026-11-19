@@ -1,0 +1,65 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Terms with their description. `href` turns the description into a link. */
+  items: { term: string; description: string; href?: string }[];
+  class?: string;
+}
+
+const { render = true, items, class: className } = Astro.props;
+---
+
+{render && items.length > 0 && (
+  <dl class:list={["detail-list_wrap", className]}>
+    {items.map((item) => (
+      <div class="detail-list_item">
+        <dt class="detail-list_term text-style-small">{item.term}</dt>
+        <dd class="detail-list_description">
+          {item.href ? (
+            <a class="detail-list_link" href={item.href}>
+              {item.description}
+            </a>
+          ) : (
+            item.description
+          )}
+        </dd>
+      </div>
+    ))}
+  </dl>
+)}
+
+<style is:global>
+  @layer components {
+    .detail-list_wrap {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-top: var(--space-5);
+    }
+
+    .detail-list_item {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: var(--space-3);
+      padding-block: var(--space-3);
+      border-top: var(--border-width) solid var(--border);
+    }
+
+    .detail-list_term {
+      color: var(--text-2);
+    }
+
+    .detail-list_link {
+      text-decoration: underline;
+      text-decoration-color: var(--link-border);
+      text-underline-offset: 0.3em;
+      transition: text-decoration-color var(--hover-duration) var(--hover-ease);
+      @media (hover: hover) {
+        &:hover {
+          text-decoration-color: var(--link-border-hover);
+        }
+      }
+    }
+  }
+</style>

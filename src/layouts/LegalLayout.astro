@@ -1,0 +1,48 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import ContentWrapper from "@/components/wrapper/ContentWrapper.astro";
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import RichText from "@/components/typography/RichText.astro";
+import type { LegalText } from "@/types.ts";
+
+interface Props {
+  /** Legal page content for the current locale. */
+  text: LegalText;
+}
+
+const { text } = Astro.props;
+---
+
+<Layout title={text.title} description={text.effective} theme="light">
+  <Section>
+    <ContentWrapper>
+      <Heading tag="h1" variant="h2">
+        {text.title}
+      </Heading>
+      <Paragraph variant="small">{text.effective}</Paragraph>
+      <RichText maxWidth={72}>
+        {text.intro && <p>{text.intro}</p>}
+        {text.sections.map((section) => (
+          <>
+            <h2 class="text-style-h5" id={section.id}>
+              {section.title}
+            </h2>
+            {section.body.map((block) =>
+              Array.isArray(block) ? (
+                <ul>
+                  {block.map((line) => (
+                    <li>{line}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>{block}</p>
+              ),
+            )}
+          </>
+        ))}
+      </RichText>
+    </ContentWrapper>
+  </Section>
+</Layout>

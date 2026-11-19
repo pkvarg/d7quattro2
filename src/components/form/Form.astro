@@ -13,6 +13,10 @@ interface Props extends HTMLAttributes<"form"> {
   successMessage?: string;
   /** Message shown after an error. */
   errorMessage?: string;
+  /** Request body format sent to the endpoint. */
+  encoding?: "form" | "json";
+  /** Name of a hidden field real visitors leave empty. Filled submissions are dropped. */
+  honeypot?: string;
 }
 
 const {
@@ -22,6 +26,8 @@ const {
   successMessage = "Thanks — we will be in touch.",
   errorMessage = "That did not send. Please try again.",
   method = "post",
+  encoding = "form",
+  honeypot,
   class: className,
   ...rest
 } = Astro.props;
@@ -34,6 +40,8 @@ const content = await slotContent(Astro.slots);
     class:list={["form_wrap", className]}
     data-state="idle"
     data-endpoint={action}
+    data-encoding={encoding}
+    data-honeypot={honeypot}
   >
     <form
       class="form_fields"
@@ -73,11 +81,22 @@ const content = await slotContent(Astro.slots);
       if (submit) submit.disabled = true;
 
       try {
-        if (endpoint) {
+        const data = new FormData(fields);
+        const trap = form.dataset.honeypot;
+        const trapped = !!trap && !!data.get(trap);
+        if (trap) data.delete(trap);
+
+        if (endpoint && !trapped) {
+          const asJson = form.dataset.encoding === "json";
           const answer = await fetch(endpoint, {
             method: fields.method || "post",
-            body: new FormData(fields),
-            headers: { Accept: "application/json" },
+            body: asJson ? JSON.stringify(Object.fromEntries(data)) : data,
+            headers: asJson
+              ? {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                }
+              : { Accept: "application/json" },
           });
           if (!answer.ok) throw new Error(String(answer.status));
         }

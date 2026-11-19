@@ -1,0 +1,13 @@
+---
+import LegalLayout from "@/layouts/LegalLayout.astro";
+import { LOCALES, toLocale } from "@/i18n/locales.ts";
+import { privacy } from "@/i18n/privacy.ts";
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale } }));
+}
+
+const locale = toLocale(Astro.params.locale);
+---
+
+<LegalLayout text={privacy[locale] ?? privacy.sk} />

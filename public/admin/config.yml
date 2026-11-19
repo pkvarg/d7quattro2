@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: OWNER/REPO
+  repo: pkvarg/d7quattro2
   branch: main
 
 media_folder: public/uploads
@@ -12,6 +12,155 @@ i18n:
   default_locale: sk
 
 collections:
+  - name: texts
+    label: Site texts
+    i18n:
+      structure: multiple_files
+    files:
+      - name: messages
+        label: Page texts
+        file: src/i18n/messages/{{locale}}.json
+        i18n: true
+        fields:
+          - { name: navProject, label: navProject, widget: string, i18n: true }
+          - { name: navAboutUs, label: navAboutUs, widget: string, i18n: true }
+          - { name: navPrices, label: navPrices, widget: string, i18n: true }
+          - { name: navContact, label: navContact, widget: string, i18n: true }
+          - { name: heroTitle, label: heroTitle, widget: string, i18n: true }
+          - { name: heroSubtitle1, label: heroSubtitle1, widget: string, i18n: true }
+          - { name: heroSubtitle2, label: heroSubtitle2, widget: string, i18n: true }
+          - { name: heroDescription1, label: heroDescription1, widget: string, i18n: true }
+          - { name: heroDescription2, label: heroDescription2, widget: string, i18n: true }
+          - { name: headerAbout, label: headerAbout, widget: string, i18n: true }
+          - { name: tradeRules, label: tradeRules, widget: string, i18n: true }
+          - { name: headerContact, label: headerContact, widget: string, i18n: true }
+          - { name: headerGdpr, label: headerGdpr, widget: string, i18n: true }
+          - { name: home, label: home, widget: string, i18n: true }
+          - { name: projectTitle, label: projectTitle, widget: string, i18n: true }
+          - { name: projectDescription, label: projectDescription, widget: text, i18n: true }
+          - { name: exterior, label: exterior, widget: string, i18n: true }
+          - { name: interior, label: interior, widget: string, i18n: true }
+          - { name: locationTitle, label: locationTitle, widget: string, i18n: true }
+          - { name: locationDescription, label: locationDescription, widget: text, i18n: true }
+          - { name: locationDistance, label: locationDistance, widget: string, i18n: true }
+          - { name: googleMapsLink, label: googleMapsLink, widget: string, i18n: true }
+          - { name: architecturalTitle, label: architecturalTitle, widget: string, i18n: true }
+          - { name: architecturalDescription, label: architecturalDescription, widget: text, i18n: true }
+          - { name: qualityTitle, label: qualityTitle, widget: string, i18n: true }
+          - { name: qualityDescription, label: qualityDescription, widget: text, i18n: true }
+          - { name: sustainableTitle, label: sustainableTitle, widget: string, i18n: true }
+          - { name: sustainableDescription, label: sustainableDescription, widget: text, i18n: true }
+          - { name: ctaTitle, label: ctaTitle, widget: string, i18n: true }
+          - { name: ctaDescription, label: ctaDescription, widget: text, i18n: true }
+          - { name: contactButton, label: contactButton, widget: string, i18n: true }
+          - { name: documentsTitle, label: documentsTitle, widget: string, i18n: true }
+          - { name: documentsDescription, label: documentsDescription, widget: text, i18n: true }
+          - { name: downloadPdf, label: downloadPdf, widget: string, i18n: true }
+          - { name: clickToView, label: clickToView, widget: string, i18n: true }
+          - { name: moreDocuments, label: moreDocuments, widget: string, i18n: true }
+          - name: documentTypes
+            label: documentTypes
+            widget: object
+            i18n: true
+            fields:
+              - { name: grundriss, label: grundriss, widget: string, i18n: true }
+              - { name: lageplan, label: lageplan, widget: string, i18n: true }
+              - { name: wohnung, label: wohnung, widget: string, i18n: true }
+          - { name: philosophy, label: philosophy, widget: text, i18n: true }
+          - { name: homeQuote, label: homeQuote, widget: text, i18n: true }
+          - { name: companyDescription, label: companyDescription, widget: text, i18n: true }
+          - { name: companyProcedures, label: companyProcedures, widget: text, i18n: true }
+          - { name: companyPhilosophyTitle, label: companyPhilosophyTitle, widget: string, i18n: true }
+          - { name: companyPhilosophyText, label: companyPhilosophyText, widget: text, i18n: true }
+          - { name: founderTitle, label: founderTitle, widget: string, i18n: true }
+          - { name: higherLevelQuote, label: higherLevelQuote, widget: string, i18n: true }
+          - { name: footerTagline, label: footerTagline, widget: text, i18n: true }
+          - { name: footerCompany, label: footerCompany, widget: string, i18n: true }
+          - { name: footerAboutUs, label: footerAboutUs, widget: string, i18n: true }
+          - { name: footerOurTeam, label: footerOurTeam, widget: string, i18n: true }
+          - { name: footerServices, label: footerServices, widget: string, i18n: true }
+          - { name: footerCustomHomes, label: footerCustomHomes, widget: string, i18n: true }
+          - { name: footerRenovations, label: footerRenovations, widget: string, i18n: true }
+          - { name: footerInteriorDesign, label: footerInteriorDesign, widget: string, i18n: true }
+          - { name: footerArchitecturalPlanning, label: footerArchitecturalPlanning, widget: string, i18n: true }
+          - { name: footerResources, label: footerResources, widget: string, i18n: true }
+          - { name: footerPortfolio, label: footerPortfolio, widget: string, i18n: true }
+          - { name: footerTestimonials, label: footerTestimonials, widget: string, i18n: true }
+          - { name: footerBlog, label: footerBlog, widget: string, i18n: true }
+          - { name: footerFaq, label: footerFaq, widget: string, i18n: true }
+          - { name: footerCopyright, label: footerCopyright, widget: string, i18n: true }
+          - { name: footerPrivacyPolicy, label: footerPrivacyPolicy, widget: string, i18n: true }
+          - { name: footerTermsOfService, label: footerTermsOfService, widget: string, i18n: true }
+          - { name: footerCookiePolicy, label: footerCookiePolicy, widget: string, i18n: true }
+          - { name: cookies, label: cookies, widget: text, i18n: true }
+          - { name: cookiesAgree, label: cookiesAgree, widget: string, i18n: true }
+          - { name: cookiesDisagree, label: cookiesDisagree, widget: string, i18n: true }
+          - { name: back, label: back, widget: string, i18n: true }
+          - { name: contactMessageSuccess, label: contactMessageSuccess, widget: string, i18n: true }
+          - { name: getInTouch, label: getInTouch, widget: string, i18n: true }
+          - { name: discussDreamHome, label: discussDreamHome, widget: string, i18n: true }
+          - { name: readyToTransform, label: readyToTransform, widget: text, i18n: true }
+          - { name: contactInformation, label: contactInformation, widget: string, i18n: true }
+          - { name: address, label: address, widget: string, i18n: true }
+          - { name: austria, label: austria, widget: string, i18n: true }
+          - { name: contactName, label: contactName, widget: string, i18n: true }
+          - { name: contactSubject, label: contactSubject, widget: string, i18n: true }
+          - { name: contactEmail, label: contactEmail, widget: string, i18n: true }
+          - { name: contactPhone, label: contactPhone, widget: string, i18n: true }
+          - { name: contactMessage, label: contactMessage, widget: string, i18n: true }
+          - { name: contactAgree, label: contactAgree, widget: string, i18n: true }
+          - { name: contactGdpr, label: contactGdpr, widget: string, i18n: true }
+          - { name: contactSending, label: contactSending, widget: string, i18n: true }
+          - { name: contactSend, label: contactSend, widget: string, i18n: true }
+          - { name: contactError2, label: contactError2, widget: string, i18n: true }
+          - { name: contactError, label: contactError, widget: string, i18n: true }
+          - { name: contactSuccess, label: contactSuccess, widget: string, i18n: true }
+          - { name: contactGdpr1, label: contactGdpr1, widget: string, i18n: true }
+          - { name: contactGdpr2, label: contactGdpr2, widget: string, i18n: true }
+          - { name: pricesTitle, label: pricesTitle, widget: string, i18n: true }
+          - { name: pricesDescription, label: pricesDescription, widget: text, i18n: true }
+          - { name: unitName, label: unitName, widget: string, i18n: true }
+          - { name: rentPrice, label: rentPrice, widget: string, i18n: true }
+          - { name: energyCost, label: energyCost, widget: string, i18n: true }
+          - { name: deposit, label: deposit, widget: string, i18n: true }
+          - { name: depositAmount, label: depositAmount, widget: string, i18n: true }
+          - { name: shortTermRental, label: shortTermRental, widget: string, i18n: true }
+          - { name: shortTermPrice, label: shortTermPrice, widget: string, i18n: true }
+          - { name: internet, label: internet, widget: string, i18n: true }
+          - { name: internetDescription, label: internetDescription, widget: string, i18n: true }
+          - { name: furnishing, label: furnishing, widget: string, i18n: true }
+          - { name: furnishingDescription, label: furnishingDescription, widget: string, i18n: true }
+          - { name: features, label: features, widget: string, i18n: true }
+          - { name: photovoltaic, label: photovoltaic, widget: string, i18n: true }
+          - { name: electricCharging, label: electricCharging, widget: string, i18n: true }
+          - { name: electricMeter, label: electricMeter, widget: string, i18n: true }
+          - { name: area, label: area, widget: string, i18n: true }
+          - { name: areaSize, label: areaSize, widget: string, i18n: true }
+          - { name: contactForDetails, label: contactForDetails, widget: string, i18n: true }
+          - { name: factBratislava, label: factBratislava, widget: string, i18n: true }
+          - { name: factVienna, label: factVienna, widget: string, i18n: true }
+          - { name: factHouses, label: factHouses, widget: string, i18n: true }
+          - { name: factMinutes, label: factMinutes, widget: string, i18n: true }
+          - { name: perMonth, label: perMonth, widget: string, i18n: true }
+          - { name: contactTitle, label: contactTitle, widget: string, i18n: true }
+          - { name: founderName, label: founderName, widget: string, i18n: true }
+          - { name: plansOpen, label: plansOpen, widget: string, i18n: true }
+          - { name: email, label: email, widget: string, i18n: true }
+
+  - name: houses
+    label: Rental prices
+    label_singular: House
+    folder: src/content/houses
+    extension: json
+    format: json
+    create: true
+    identifier_field: number
+    slug: "house-{{fields.number}}"
+    fields:
+      - { name: number, label: House number, widget: number, value_type: int, min: 1 }
+      - { name: rent, label: Base rent per month (EUR), widget: number, value_type: int, min: 0 }
+      - { name: energy, label: Energy costs (EUR), widget: number, value_type: int, min: 0 }
+
   - name: posts
     label: Posts
     label_singular: Post

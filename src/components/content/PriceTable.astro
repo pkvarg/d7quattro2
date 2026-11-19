@@ -1,0 +1,82 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Table caption for assistive technology. */
+  caption: string;
+  /** Column headings. */
+  headings: { unit: string; rent: string; energy: string };
+  /** One row per house. Amounts are already formatted. */
+  rows: { name: string; rent: string; energy: string }[];
+  class?: string;
+}
+
+const {
+  render = true,
+  caption,
+  headings,
+  rows,
+  class: className,
+} = Astro.props;
+---
+
+{render && rows.length > 0 && (
+  <table class:list={["price-table_wrap", className]}>
+    <caption class="sr-only">{caption}</caption>
+    <thead>
+      <tr>
+        <th class="text-style-small" scope="col">
+          {headings.unit}
+        </th>
+        <th class="text-style-small" scope="col">
+          {headings.rent}
+        </th>
+        <th class="text-style-small" scope="col">
+          {headings.energy}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>
+          <th class="price-table_name" scope="row">
+            {row.name}
+          </th>
+          <td class="price-table_rent text-style-h4">{row.rent}</td>
+          <td>{row.energy}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
+
+<style is:global>
+  @layer components {
+    .price-table_wrap {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: lining-nums tabular-nums;
+
+      & th,
+      & td {
+        padding: var(--space-3) var(--space-3) var(--space-3) 0;
+        text-align: left;
+        vertical-align: baseline;
+        font-weight: var(--primary-regular);
+        text-box: none;
+      }
+
+      & thead th {
+        color: var(--text-2);
+      }
+
+      & tbody tr {
+        border-top: var(--border-width) solid var(--border);
+      }
+    }
+
+    .price-table_name {
+      font-weight: var(--primary-medium);
+    }
+  }
+</style>

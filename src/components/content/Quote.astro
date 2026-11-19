@@ -1,0 +1,56 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Quoted text. */
+  text: string;
+  /** Who said it. */
+  author?: string;
+  /** Role or company of the author. */
+  role?: string;
+  class?: string;
+}
+
+const { render = true, text, author, role, class: className } = Astro.props;
+---
+
+{render && text && (
+  <figure class:list={["quote_wrap", className]}>
+    <blockquote class="quote_text text-style-h4">{text}</blockquote>
+    {author && (
+      <figcaption class="quote_author text-style-small">
+        <span class="quote_name">{author}</span>
+        {role && <span>{role}</span>}
+      </figcaption>
+    )}
+  </figure>
+)}
+
+<style is:global>
+  @layer components {
+    .quote_wrap {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      margin-top: var(--space-6);
+      padding-top: var(--space-4);
+      border-top: var(--border-width) solid var(--heading-accent);
+    }
+
+    .quote_text {
+      max-width: 28ch;
+      text-box: none;
+    }
+
+    .quote_author {
+      display: flex;
+      flex-direction: column;
+      color: var(--text-2);
+    }
+
+    .quote_name {
+      color: var(--text);
+      font-weight: var(--primary-medium);
+    }
+  }
+</style>

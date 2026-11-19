@@ -1,11 +1,10 @@
 ---
-import Icon from "@/components/media/Icon.astro";
 import NavLink from "@/components/global/NavLink.astro";
 import LocaleSwitcher from "@/components/global/LocaleSwitcher.astro";
-import logo from "@/assets/logo/logo.svg";
 import { SITE_NAME } from "@/consts.ts";
 import { localizePath, toLocale, type Locale } from "@/i18n/locales.ts";
 import { useTranslations } from "@/i18n/ui.ts";
+import { getMessages } from "@/i18n/messages.ts";
 
 interface Props {
   /** Set to `false` to omit the component. */
@@ -20,13 +19,15 @@ const { render = true, overlap = false, translations } = Astro.props;
 
 const locale = toLocale(Astro.currentLocale);
 const t = useTranslations(locale);
+const m = getMessages(locale);
+const home = localizePath(locale);
 ---
 
 {render && (
   <header class:list={["nav_wrap", overlap && "overlap"]}>
     <div class="nav_inner">
-      <a class="nav_logo" href={localizePath(locale)} aria-label={SITE_NAME}>
-        <Icon src={logo} variant="full-width" />
+      <a class="nav_logo" href={home} aria-label={SITE_NAME}>
+        {SITE_NAME}
       </a>
       <button
         class="nav_toggle"
@@ -40,11 +41,10 @@ const t = useTranslations(locale);
       <nav class="nav_menu" id="nav-menu" aria-label={t("nav.main")}>
         <div class="nav_menu_inner">
           <ul class="nav_links">
-            <NavLink href={localizePath(locale)}>{t("nav.home")}</NavLink>
-            <NavLink href={localizePath(locale, "blog")}>
-              {t("nav.blog")}
-            </NavLink>
-            <NavLink href="/example-components">Example Components</NavLink>
+            <NavLink href={`${home}#project`}>{m.navProject}</NavLink>
+            <NavLink href={`${home}#prices`}>{m.navPrices}</NavLink>
+            <NavLink href={`${home}#about`}>{m.navAboutUs}</NavLink>
+            <NavLink href={`${home}#contact`}>{m.navContact}</NavLink>
           </ul>
           <LocaleSwitcher translations={translations} />
         </div>
@@ -100,6 +100,11 @@ const t = useTranslations(locale);
       if (!nav.contains(target)) setOpen(false);
     });
 
+    const setScrolled = () =>
+      nav.classList.toggle("scrolled", window.scrollY > 24);
+    setScrolled();
+    window.addEventListener("scroll", setScrolled, { passive: true });
+
     window
       .matchMedia("(width >= 48rem)")
       .addEventListener("change", (event) => {
@@ -110,6 +115,10 @@ const t = useTranslations(locale);
 
 <style is:global>
   @layer components {
+    :target {
+      scroll-margin-top: calc(var(--nav-height) + var(--space-4));
+    }
+
     .nav_wrap {
       position: sticky;
       top: 0;
@@ -121,9 +130,18 @@ const t = useTranslations(locale);
       color: var(--text);
       border-bottom: var(--border-width) solid var(--border);
 
+      transition:
+        background-color var(--open-duration) var(--open-ease),
+        border-color var(--open-duration) var(--open-ease);
+
       &.overlap {
         position: fixed;
         inset-inline: 0;
+      }
+
+      &.overlap:not(.scrolled, .open) {
+        background-color: transparent;
+        border-bottom-color: transparent;
       }
     }
 
@@ -145,7 +163,9 @@ const t = useTranslations(locale);
     .nav_logo {
       display: flex;
       align-items: center;
-      width: 6.5rem;
+      font-family: var(--display-family);
+      font-size: var(--h5);
+      white-space: nowrap;
       transition: opacity var(--hover-duration) var(--hover-ease);
       @media (hover: hover) {
         &:hover {
