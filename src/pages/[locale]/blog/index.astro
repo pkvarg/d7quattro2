@@ -1,0 +1,42 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import ContentWrapper from "@/components/wrapper/ContentWrapper.astro";
+import Grid from "@/components/wrapper/Grid.astro";
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Card from "@/components/item/Card.astro";
+import { LOCALES, localizePath, toLocale } from "@/i18n/locales.ts";
+import { useTranslations } from "@/i18n/ui.ts";
+import { getPosts, parsePostId } from "@/utils/posts.ts";
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale } }));
+}
+
+const locale = toLocale(Astro.params.locale);
+const t = useTranslations(locale);
+const posts = await getPosts(locale);
+---
+
+<Layout title={t("blog.title")} description={t("blog.description")}>
+  <Section>
+    <ContentWrapper>
+      <Heading tag="h1">{t("blog.title")}</Heading>
+      <Paragraph variant="large" maxWidth={36}>
+        {posts.length > 0 ? t("blog.description") : t("blog.empty")}
+      </Paragraph>
+    </ContentWrapper>
+    <Grid medium={2} large={3} render={posts.length > 0}>
+      {posts.map((post) => (
+        <Card
+          heading={post.data.title}
+          headingTag="h2"
+          text={post.data.description}
+          buttonLabel={t("blog.read")}
+          buttonHref={localizePath(locale, `blog/${parsePostId(post.id).slug}`)}
+        />
+      ))}
+    </Grid>
+  </Section>
+</Layout>

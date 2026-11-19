@@ -1,0 +1,83 @@
+---
+import {
+  LOCALES,
+  LOCALE_NAMES,
+  LOCALE_TAGS,
+  localizePath,
+  toLocale,
+  translatePath,
+  type Locale,
+} from "@/i18n/locales.ts";
+import { useTranslations } from "@/i18n/ui.ts";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Locales this page exists in. Other locales link to their home page. */
+  translations?: readonly Locale[];
+}
+
+const { render = true, translations = LOCALES } = Astro.props;
+
+const current = toLocale(Astro.currentLocale);
+const t = useTranslations(current);
+
+const links = LOCALES.map((locale) => ({
+  locale,
+  href:
+    (translations.includes(locale) &&
+      translatePath(Astro.url.pathname, locale)) ||
+    localizePath(locale),
+}));
+---
+
+{render && (
+  <ul class="locale-switcher_wrap" aria-label={t("nav.language")}>
+    {links.map(({ locale, href }) => (
+      <li>
+        <a
+          class="locale-switcher_link"
+          href={href}
+          hreflang={LOCALE_TAGS[locale]}
+          lang={locale}
+          aria-label={LOCALE_NAMES[locale]}
+          aria-current={locale === current ? "true" : undefined}
+        >
+          {locale}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style is:global>
+  @layer components {
+    .locale-switcher_wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: 0 var(--site-margin) var(--space-4);
+      font-size: var(--text-small);
+      font-weight: var(--primary-medium);
+      text-transform: uppercase;
+
+      @media (width >= 48rem) {
+        padding: 0;
+      }
+    }
+
+    .locale-switcher_link {
+      color: color-mix(in lab, currentcolor 60%, transparent);
+      text-decoration: none;
+      transition: color var(--hover-duration) var(--hover-ease);
+      &[aria-current="true"] {
+        color: var(--text);
+      }
+      @media (hover: hover) {
+        &:hover {
+          color: var(--text);
+        }
+      }
+    }
+  }
+</style>
