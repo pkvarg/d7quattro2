@@ -8,6 +8,12 @@ type Props = HTMLAttributes<"div"> & {
   render?: boolean;
   /** Accessible label. Defaults to `Slider`. */
   label?: string;
+  /** Marker label, followed by the slide number. Defaults to `Go to slide`. */
+  markerLabel?: string;
+  /** Previous button label. Defaults to `Previous slide`. */
+  previousLabel?: string;
+  /** Next button label. Defaults to `Next slide`. */
+  nextLabel?: string;
   /** Slider bounds. */
   variant?: "bleed" | "crop-start" | "contained";
   /** Slides shown below 30rem. Defaults to `1.02`.
@@ -35,6 +41,9 @@ type Props = HTMLAttributes<"div"> & {
 const {
   render = true,
   label = "Slider",
+  markerLabel = "Go to slide",
+  previousLabel = "Previous slide",
+  nextLabel = "Next slide",
   variant = "bleed",
   xsmall = 1.02,
   small,
@@ -76,6 +85,7 @@ const slides = await slotContent(Astro.slots);
   <div
     class:list={["slider_wrap", variant !== "bleed" && variant, className]}
     style={visible}
+    data-marker-label={markerLabel}
     {...rest}
   >
     <div class="slider_list" role="group" aria-label={label} tabindex="0">
@@ -89,13 +99,13 @@ const slides = await slotContent(Astro.slots);
           variant="arrow"
           emphasis="secondary"
           direction="back"
-          label="Previous slide"
+          label={previousLabel}
           data-step="-1"
         />
         <Button
           variant="arrow"
           emphasis="secondary"
-          label="Next slide"
+          label={nextLabel}
           data-step="1"
         />
       </div>
@@ -162,7 +172,10 @@ const slides = await slotContent(Astro.slots);
           const marker = document.createElement("button");
           marker.type = "button";
           marker.className = "slider_marker";
-          marker.setAttribute("aria-label", `Go to slide ${i + 1}`);
+          marker.setAttribute(
+            "aria-label",
+            `${slider.dataset.markerLabel ?? "Go to slide"} ${i + 1}`,
+          );
           marker.addEventListener("click", () =>
             list.scrollTo({ left: i * stride(), behavior: behavior() }),
           );
@@ -378,6 +391,7 @@ const slides = await slotContent(Astro.slots);
     }
 
     .slider_marker {
+      position: relative;
       width: 0.75rem;
       height: 0.75rem;
       padding: 0;
@@ -385,6 +399,12 @@ const slides = await slotContent(Astro.slots);
       border-radius: var(--radius-round);
       background: none;
       transition: background-color var(--hover-duration) var(--hover-ease);
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: -0.4375rem -0.3125rem;
+      }
 
       &.is-active {
         background-color: var(--text);

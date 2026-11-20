@@ -124,7 +124,14 @@ const subjects = {
         <TabLink>{capitalize(m.interior)}</TabLink>
       </Fragment>
       <div>
-        <Slider label={capitalize(m.exterior)} medium={2} large={2.2}>
+        <Slider
+          label={capitalize(m.exterior)}
+          markerLabel={t("gallery.slide")}
+          previousLabel={t("gallery.previous")}
+          nextLabel={t("gallery.next")}
+          medium={2}
+          large={2.2}
+        >
           {exteriorImages.map((image, index) => (
             <GalleryThumb
               src={image}
@@ -137,7 +144,14 @@ const subjects = {
         </Slider>
       </div>
       <div>
-        <Slider label={capitalize(m.interior)} medium={2} large={2.2}>
+        <Slider
+          label={capitalize(m.interior)}
+          markerLabel={t("gallery.slide")}
+          previousLabel={t("gallery.previous")}
+          nextLabel={t("gallery.next")}
+          medium={2}
+          large={2.2}
+        >
           {interiorImages.map((image, index) => (
             <GalleryThumb
               src={image}
@@ -363,7 +377,7 @@ const subjects = {
         <Textarea
           label={m.contactMessage}
           name="mailMessage"
-          minLines={5}
+          minLines={3}
           required
         />
         <input type="hidden" name="locale" value={locale} />
