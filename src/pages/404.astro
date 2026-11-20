@@ -1,36 +1,18 @@
 ---
-import Layout from "@/layouts/BaseLayout.astro";
-import Section from "@/components/wrapper/Section.astro";
-import Heading from "@/components/typography/Heading.astro";
-import Paragraph from "@/components/typography/Paragraph.astro";
-import ButtonWrapper from "@/components/wrapper/ButtonWrapper.astro";
-import Button from "@/components/Button.astro";
-import ContentWrapper from "@/components/wrapper/ContentWrapper.astro";
-import { localizePath, toLocale } from "@/i18n/locales.ts";
-import { useTranslations } from "@/i18n/ui.ts";
+import NotFoundLayout from "@/layouts/NotFoundLayout.astro";
+import { DEFAULT_LOCALE, LOCALES } from "@/i18n/locales.ts";
 
-const locale = toLocale(Astro.currentLocale);
-const t = useTranslations(locale);
+const others = LOCALES.filter((locale) => locale !== DEFAULT_LOCALE);
 ---
 
-<Layout
-  title={t("notFound.title")}
-  description={t("notFound.description")}
-  overlap={true}
->
-  <Section paddingTop="navoverlap" paddingBottom="navoverlap" class="flex-grow">
-    <ContentWrapper centered={true}>
-      <Heading variant="h3" tag="h1" maxWidth={17}>
-        {t("notFound.heading")}
-      </Heading>
-      <Paragraph variant="large" maxWidth={36}>
-        {t("notFound.text")}
-      </Paragraph>
-      <ButtonWrapper>
-        <Button element="link" href={localizePath(locale)}>
-          {t("notFound.back")}
-        </Button>
-      </ButtonWrapper>
-    </ContentWrapper>
-  </Section>
-</Layout>
+<NotFoundLayout>
+  <script slot="head" is:inline define:vars={{ locales: LOCALES, others }}>
+    const first = location.pathname.split("/")[1];
+    const preferred = (navigator.languages || [navigator.language])
+      .map((tag) => tag.slice(0, 2).toLowerCase())
+      .find((tag) => locales.includes(tag));
+    if (!locales.includes(first) && others.includes(preferred)) {
+      location.replace(`/${preferred}/404/`);
+    }
+  </script>
+</NotFoundLayout>

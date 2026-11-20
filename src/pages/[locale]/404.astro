@@ -1,0 +1,10 @@
+---
+import NotFoundLayout from "@/layouts/NotFoundLayout.astro";
+import { LOCALES } from "@/i18n/locales.ts";
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale } }));
+}
+---
+
+<NotFoundLayout />
