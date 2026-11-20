@@ -1,0 +1,52 @@
+---
+import Img from "@/components/media/Img.astro";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Image source. */
+  src: ImageMetadata;
+  /** Image alt text. */
+  alt: string;
+  /** ID of the `GalleryViewer` this image opens. */
+  viewer: string;
+  /**
+   * Position of the image in the viewer, starting at 0.
+   *
+   * @min 0
+   * @int
+   */
+  index: number;
+  /** Label announced for the button. */
+  label: string;
+}
+
+const { render = true, src, alt, viewer, index, label } = Astro.props;
+---
+
+{render && (
+  <button
+    class="gallery-thumb_wrap"
+    type="button"
+    data-modal-open={viewer}
+    data-slide={index}
+    aria-label={`${label}: ${alt}`}
+  >
+    <Img
+      src={src}
+      alt={alt}
+      variant="constrained"
+      sizes="(width >= 48rem) 50vw, 100vw"
+    />
+  </button>
+)}
+
+<style is:global>
+  @layer components {
+    .gallery-thumb_wrap {
+      display: block;
+      cursor: zoom-in;
+      overflow: clip;
+    }
+  }
+</style>

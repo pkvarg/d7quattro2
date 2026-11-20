@@ -23,6 +23,8 @@ import DetailList from "@/components/content/DetailList.astro";
 import DocumentList from "@/components/content/DocumentList.astro";
 import PriceTable from "@/components/content/PriceTable.astro";
 import Quote from "@/components/content/Quote.astro";
+import GalleryThumb from "@/components/content/GalleryThumb.astro";
+import GalleryViewer from "@/components/content/GalleryViewer.astro";
 import heroImage from "@/assets/images/exterior/exterior-4.webp";
 import aboutImage from "@/assets/images/exterior/exterior-2.webp";
 import locationImage from "@/assets/images/location.jpg";
@@ -33,6 +35,7 @@ import {
   toLocale,
 } from "@/i18n/locales.ts";
 import { getMessages } from "@/i18n/messages.ts";
+import { useTranslations } from "@/i18n/ui.ts";
 import { exteriorImages, interiorImages } from "@/utils/gallery.ts";
 
 export function getStaticPaths() {
@@ -41,6 +44,7 @@ export function getStaticPaths() {
 
 const locale = toLocale(Astro.params.locale);
 const m = getMessages(locale);
+const t = useTranslations(locale);
 const home = localizePath(locale);
 
 const capitalize = (text: string) =>
@@ -122,11 +126,12 @@ const subjects = {
       <div>
         <Slider label={capitalize(m.exterior)} medium={2} large={2.2}>
           {exteriorImages.map((image, index) => (
-            <Img
+            <GalleryThumb
               src={image}
               alt={`${capitalize(m.exterior)} ${index + 1}`}
-              variant="constrained"
-              sizes="(width >= 48rem) 50vw, 100vw"
+              viewer="gallery-exterior"
+              index={index}
+              label={t("gallery.enlarge")}
             />
           ))}
         </Slider>
@@ -134,11 +139,12 @@ const subjects = {
       <div>
         <Slider label={capitalize(m.interior)} medium={2} large={2.2}>
           {interiorImages.map((image, index) => (
-            <Img
+            <GalleryThumb
               src={image}
               alt={`${capitalize(m.interior)} ${index + 1}`}
-              variant="constrained"
-              sizes="(width >= 48rem) 50vw, 100vw"
+              viewer="gallery-interior"
+              index={index}
+              label={t("gallery.enlarge")}
             />
           ))}
         </Slider>
@@ -381,4 +387,14 @@ const subjects = {
       </Form>
     </ContentWrapper>
   </Section>
+  <GalleryViewer
+    id="gallery-exterior"
+    label={capitalize(m.exterior)}
+    images={exteriorImages}
+  />
+  <GalleryViewer
+    id="gallery-interior"
+    label={capitalize(m.interior)}
+    images={interiorImages}
+  />
 </Layout>

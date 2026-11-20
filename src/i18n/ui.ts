@@ -1,18 +1,11 @@
 import type { Locale } from "./locales.ts";
 
 const sk = {
-  "nav.home": "Domov",
-  "nav.blog": "Blog",
   "nav.menu": "Menu",
   "nav.main": "Hlavná navigácia",
   "nav.footer": "Pätička",
   "nav.language": "Jazyk",
-  "home.title": "Vitajte",
-  "blog.title": "Blog",
-  "blog.description": "Novinky a články.",
-  "blog.empty": "Zatiaľ tu nie sú žiadne články.",
-  "blog.read": "Čítať článok",
-  "blog.back": "Späť na blog",
+  "gallery.enlarge": "Zväčšiť obrázok",
   "notFound.title": "Stránka sa nenašla",
   "notFound.description": "Stránka, ktorú hľadáte, neexistuje.",
   "notFound.heading": "Táto stránka neexistuje",
@@ -24,18 +17,11 @@ const sk = {
 type Key = keyof typeof sk;
 
 const de: Record<Key, string> = {
-  "nav.home": "Startseite",
-  "nav.blog": "Blog",
   "nav.menu": "Menü",
   "nav.main": "Hauptnavigation",
   "nav.footer": "Fußzeile",
   "nav.language": "Sprache",
-  "home.title": "Willkommen",
-  "blog.title": "Blog",
-  "blog.description": "Neuigkeiten und Artikel.",
-  "blog.empty": "Hier gibt es noch keine Artikel.",
-  "blog.read": "Artikel lesen",
-  "blog.back": "Zurück zum Blog",
+  "gallery.enlarge": "Bild vergrößern",
   "notFound.title": "Seite nicht gefunden",
   "notFound.description": "Die gesuchte Seite existiert nicht.",
   "notFound.heading": "Diese Seite existiert nicht",
@@ -45,18 +31,11 @@ const de: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
-  "nav.home": "Home",
-  "nav.blog": "Blog",
   "nav.menu": "Menu",
   "nav.main": "Main",
   "nav.footer": "Footer",
   "nav.language": "Language",
-  "home.title": "Welcome",
-  "blog.title": "Blog",
-  "blog.description": "News and articles.",
-  "blog.empty": "There are no articles here yet.",
-  "blog.read": "Read article",
-  "blog.back": "Back to blog",
+  "gallery.enlarge": "Enlarge image",
   "notFound.title": "Page not found",
   "notFound.description": "The page you're looking for doesn't exist.",
   "notFound.heading": "This page doesn't exist",

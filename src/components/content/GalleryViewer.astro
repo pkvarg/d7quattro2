@@ -1,0 +1,92 @@
+---
+import Modal from "@/components/interactive/Modal.astro";
+import Slider from "@/components/interactive/Slider.astro";
+import Img from "@/components/media/Img.astro";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Viewer ID that `GalleryThumb` buttons point to. */
+  id: string;
+  /** Accessible label. */
+  label: string;
+  /** Images in viewing order. */
+  images: ImageMetadata[];
+}
+
+const { render = true, id, label, images } = Astro.props;
+---
+
+<Modal
+  render={render && images.length > 0}
+  id={id}
+  label={label}
+  variant="full-screen"
+  class="theme-dark"
+  data-gallery-viewer
+>
+  <Slider label={label} variant="contained" xsmall={1}>
+    {images.map((image, index) => (
+      <Img
+        src={image}
+        alt={`${label} ${index + 1}`}
+        variant="constrained"
+        sizes="100vw"
+        transparent={true}
+        style="max-height: 70svh;"
+        data-gallery-slide
+      />
+    ))}
+  </Slider>
+</Modal>
+
+<script>
+  const wanted = new Map<string, number>();
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const trigger = target.closest<HTMLElement>(
+        "[data-modal-open][data-slide]",
+      );
+      if (!trigger?.dataset.modalOpen) return;
+      wanted.set(trigger.dataset.modalOpen, Number(trigger.dataset.slide));
+    },
+    true,
+  );
+
+  for (const viewer of document.querySelectorAll<HTMLDialogElement>(
+    "[data-gallery-viewer]",
+  )) {
+    const slides = [
+      ...viewer.querySelectorAll<HTMLElement>("[data-gallery-slide]"),
+    ];
+
+    viewer.addEventListener("modal-open", () => {
+      const slide = slides[wanted.get(viewer.id) ?? 0];
+      const list = slide?.parentElement;
+      if (!slide || !list) return;
+      requestAnimationFrame(() => {
+        list.scrollTo({
+          left: slide.offsetLeft - slides[0].offsetLeft,
+          behavior: "instant",
+        });
+        list.focus({ preventScroll: true });
+      });
+    });
+
+    viewer.addEventListener("keydown", (event) => {
+      const step =
+        event.key === "ArrowRight"
+          ? "1"
+          : event.key === "ArrowLeft"
+            ? "-1"
+            : "";
+      if (!step) return;
+      event.preventDefault();
+      viewer.querySelector<HTMLButtonElement>(`[data-step="${step}"]`)?.click();
+    });
+  }
+</script>

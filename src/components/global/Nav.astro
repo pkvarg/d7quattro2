@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import NavLink from "@/components/global/NavLink.astro";
+import logo from "@/assets/logo/d7bau-white.png";
 import LocaleSwitcher from "@/components/global/LocaleSwitcher.astro";
 import { SITE_NAME } from "@/consts.ts";
 import { localizePath, toLocale, type Locale } from "@/i18n/locales.ts";
@@ -24,10 +26,10 @@ const home = localizePath(locale);
 ---
 
 {render && (
-  <header class:list={["nav_wrap", overlap && "overlap"]}>
+  <header class:list={["nav_wrap", "theme-dark", overlap && "overlap"]}>
     <div class="nav_inner">
       <a class="nav_logo" href={home} aria-label={SITE_NAME}>
-        {SITE_NAME}
+        <Image src={logo} alt="" width={240} loading="eager" />
       </a>
       <button
         class="nav_toggle"
@@ -163,9 +165,7 @@ const home = localizePath(locale);
     .nav_logo {
       display: flex;
       align-items: center;
-      font-family: var(--display-family);
-      font-size: var(--h5);
-      white-space: nowrap;
+      width: 7.5rem;
       transition: opacity var(--hover-duration) var(--hover-ease);
       @media (hover: hover) {
         &:hover {
