@@ -118,7 +118,9 @@ const panels = await slotContent(Astro.slots);
 
     const uid = Math.random().toString(36).slice(2, 8);
     const auto = tabs.classList.contains("auto");
-    const toggle = tabs.querySelector<HTMLButtonElement>("[data-toggle]");
+    const toggle = tabs.querySelector<HTMLButtonElement>(
+      ":scope > .tabs_controls [data-toggle]",
+    );
     const bar = tabs.querySelector<HTMLElement>(".tabs_links");
 
     const keepInView = (link: HTMLElement) => {
@@ -138,6 +140,8 @@ const panels = await slotContent(Astro.slots);
     const slugs = links.map((link) =>
       (link.textContent ?? "")
         .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, ""),
@@ -212,7 +216,7 @@ const panels = await slotContent(Astro.slots);
     });
 
     for (const step of tabs.querySelectorAll<HTMLButtonElement>(
-      "[data-step]",
+      ":scope > .tabs_controls [data-step]",
     )) {
       step.addEventListener("click", () =>
         show(current + Number(step.dataset.step)),

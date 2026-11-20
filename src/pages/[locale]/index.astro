@@ -96,7 +96,7 @@ const subjects = {
 };
 ---
 
-<Layout overlap={true}>
+<Layout title={m.heroTitle} overlap={true}>
   <HeroHome
     kicker={m.heroTitle}
     heading={`${m.heroSubtitle1} ${m.heroSubtitle2}`}
@@ -119,26 +119,30 @@ const subjects = {
         <TabLink>{capitalize(m.exterior)}</TabLink>
         <TabLink>{capitalize(m.interior)}</TabLink>
       </Fragment>
-      <Slider label={capitalize(m.exterior)} medium={2} large={2.2}>
-        {exteriorImages.map((image, index) => (
-          <Img
-            src={image}
-            alt={`${capitalize(m.exterior)} ${index + 1}`}
-            variant="constrained"
-            sizes="(width >= 48rem) 50vw, 100vw"
-          />
-        ))}
-      </Slider>
-      <Slider label={capitalize(m.interior)} medium={2} large={2.2}>
-        {interiorImages.map((image, index) => (
-          <Img
-            src={image}
-            alt={`${capitalize(m.interior)} ${index + 1}`}
-            variant="constrained"
-            sizes="(width >= 48rem) 50vw, 100vw"
-          />
-        ))}
-      </Slider>
+      <div>
+        <Slider label={capitalize(m.exterior)} medium={2} large={2.2}>
+          {exteriorImages.map((image, index) => (
+            <Img
+              src={image}
+              alt={`${capitalize(m.exterior)} ${index + 1}`}
+              variant="constrained"
+              sizes="(width >= 48rem) 50vw, 100vw"
+            />
+          ))}
+        </Slider>
+      </div>
+      <div>
+        <Slider label={capitalize(m.interior)} medium={2} large={2.2}>
+          {interiorImages.map((image, index) => (
+            <Img
+              src={image}
+              alt={`${capitalize(m.interior)} ${index + 1}`}
+              variant="constrained"
+              sizes="(width >= 48rem) 50vw, 100vw"
+            />
+          ))}
+        </Slider>
+      </div>
     </Tabs>
   </Section>
 
