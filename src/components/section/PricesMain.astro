@@ -301,10 +301,15 @@ const details = [
 
     .prices_details_list {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
       padding: 0;
       list-style: none;
+
+      @media (width >= 48rem) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
 
       @media (width >= 64rem) {
         grid-template-columns: repeat(3, 1fr);

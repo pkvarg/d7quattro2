@@ -6,14 +6,15 @@ import PricesMain from "@/components/section/PricesMain.astro";
 import AboutMain from "@/components/section/AboutMain.astro";
 import ContactMain from "@/components/section/ContactMain.astro";
 import heroImage from "@/assets/images/hero.webp";
-import { LOCALES, toLocale } from "@/i18n/locales.ts";
+import { LOCALES, localizePath, toLocale } from "@/i18n/locales.ts";
 import { getMessages } from "@/i18n/messages.ts";
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale } }));
 }
 
-const m = getMessages(toLocale(Astro.params.locale));
+const locale = toLocale(Astro.params.locale);
+const m = getMessages(locale);
 
 const contactApi =
   import.meta.env.PUBLIC_CONTACT_API ??
@@ -27,6 +28,8 @@ const contactApi =
     heading={m.heroSubtitle1}
     headingAccent={m.heroSubtitle2}
     lines={[m.heroDescription1, m.heroDescription2]}
+    buttonLabel={m.contactButton}
+    buttonHref={`${localizePath(locale)}#contact`}
     image={heroImage}
   />
   <!-- Project -->

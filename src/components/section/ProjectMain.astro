@@ -318,6 +318,11 @@ const features = [
           current = Number(
             trigger.dataset.image ?? trigger.dataset.document ?? 0,
           );
+          const file = items[current].href;
+          if (file && matchMedia("(width < 48rem)").matches) {
+            window.open(file, "_blank", "noopener");
+            return;
+          }
           render();
           dialog.showModal();
         });
@@ -989,6 +994,38 @@ const features = [
       line-height: 1.25rem;
       white-space: nowrap;
       transform: translateX(-50%);
+    }
+
+    .project_lightbox.image {
+      @media (width < 48rem) {
+        & .project_lightbox_frame {
+          width: 94vw;
+          height: auto;
+          aspect-ratio: 3 / 2;
+        }
+
+        & .project_lightbox_close {
+          top: -3.25rem;
+          right: 0;
+        }
+
+        & .project_lightbox_step {
+          width: 2.5rem;
+          height: 2.5rem;
+
+          &.previous {
+            left: 0.5rem;
+          }
+
+          &.next {
+            right: 0.5rem;
+          }
+        }
+
+        & .project_lightbox_info {
+          bottom: -3.25rem;
+        }
+      }
     }
 
     .project_lightbox.document {

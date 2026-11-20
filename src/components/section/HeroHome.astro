@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import GoldButton from "@/components/content/GoldButton.astro";
 
 interface Props {
   /** Set to `false` to omit the component. */
@@ -12,6 +13,10 @@ interface Props {
   headingAccent?: string;
   /** Body text lines. */
   lines?: string[];
+  /** Button label, shown on phones. Omit to hide the button. */
+  buttonLabel?: string;
+  /** Button destination. */
+  buttonHref?: string;
   /** Background image. */
   image: ImageMetadata;
 }
@@ -22,6 +27,8 @@ const {
   heading,
   headingAccent,
   lines = [],
+  buttonLabel,
+  buttonHref,
   image,
 } = Astro.props;
 ---
@@ -59,6 +66,11 @@ const {
             </>
           ))}
         </p>
+      )}
+      {buttonLabel && (
+        <div class="hero-home_action">
+          <GoldButton href={buttonHref}>{buttonLabel}</GoldButton>
+        </div>
       )}
     </div>
   </section>
@@ -149,7 +161,17 @@ const {
       }
     }
 
+    .hero-home_action {
+      @media (width >= 48rem) {
+        display: none;
+      }
+    }
+
     @media (prefers-reduced-motion: no-preference) {
+      .hero-home_action {
+        animation: hero-home-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.05s both;
+      }
+
       .hero-home_media {
         animation: hero-home-media 1.2s ease-out both;
       }

@@ -1,5 +1,6 @@
 ---
 import { toLocale, type Locale } from "@/i18n/locales.ts";
+import { getMessages } from "@/i18n/messages.ts";
 
 interface Props {
   /** Set to `false` to omit the component. */
@@ -7,6 +8,9 @@ interface Props {
 }
 
 const { render = true } = Astro.props;
+
+const locale = toLocale(Astro.currentLocale);
+const m = getMessages(locale);
 
 const texts: Record<Locale, string> = {
   sk: "Web je vo výstavbe – obsah sa ešte dopĺňa.",
@@ -16,10 +20,42 @@ const texts: Record<Locale, string> = {
 ---
 
 {render && (
-  <p class="construction-notice_wrap" role="status">
-    {texts[toLocale(Astro.currentLocale)]}
-  </p>
+  <div class="construction-notice_wrap" role="status" hidden>
+    <p class="construction-notice_text">{texts[locale]}</p>
+    <button class="construction-notice_close" type="button" aria-label={m.back}>
+      ✕
+    </button>
+  </div>
 )}
+
+<script>
+  const KEY = "d7quattro-notice";
+  const notice = document.querySelector<HTMLElement>(
+    ".construction-notice_wrap",
+  );
+
+  if (notice) {
+    let dismissed = false;
+    try {
+      dismissed = sessionStorage.getItem(KEY) === "closed";
+    } catch {
+      dismissed = false;
+    }
+
+    notice.hidden = dismissed;
+
+    notice
+      .querySelector(".construction-notice_close")
+      ?.addEventListener("click", () => {
+        notice.hidden = true;
+        try {
+          sessionStorage.setItem(KEY, "closed");
+        } catch {
+          return;
+        }
+      });
+  }
+</script>
 
 <style is:global>
   @layer components {
@@ -28,8 +64,11 @@ const texts: Record<Locale, string> = {
       bottom: 1rem;
       left: 1rem;
       z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       max-width: calc(100vw - 2rem);
-      padding: 0.5rem 1rem;
+      padding: 0.25rem 0.25rem 0.25rem 1rem;
       background-color: rgb(59 58 58 / 0.95);
       color: #d4ae36;
       border: 0.0625rem solid rgb(212 174 54 / 0.6);
@@ -41,9 +80,30 @@ const texts: Record<Locale, string> = {
       font-weight: 600;
       line-height: 1rem;
 
+      &[hidden] {
+        display: none;
+      }
+
       @media (width >= 48rem) {
         font-size: 0.875rem;
         line-height: 1.25rem;
+      }
+    }
+
+    .construction-notice_close {
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      color: inherit;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      text-align: center;
+      cursor: pointer;
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: rgb(255 255 255 / 0.1);
+        }
       }
     }
   }
