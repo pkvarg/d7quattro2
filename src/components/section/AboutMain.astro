@@ -1,0 +1,293 @@
+---
+import { Image } from "astro:assets";
+import SectionTitle from "@/components/content/SectionTitle.astro";
+import homeImage from "@/assets/images/exterior/exterior-2.webp";
+import founderImage from "@/assets/images/founder.jpeg";
+import { toLocale } from "@/i18n/locales.ts";
+import { getMessages } from "@/i18n/messages.ts";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+}
+
+const { render = true } = Astro.props;
+
+const m = getMessages(toLocale(Astro.currentLocale));
+---
+
+{render && (
+  <section class="about_wrap page-section" id="about">
+    <div class="page-container about_container">
+      <SectionTitle title="d7 bau" text={m.philosophy} italic />
+
+      <div class="about_layout">
+        <div class="about_visual" data-reveal="left">
+          <div class="about_frame">
+            <div class="about_frame_inner">
+              <Image
+                src={homeImage}
+                alt="Luxury Home"
+                widths={[480, 800, 1200]}
+                sizes="(width >= 64rem) 36rem, 100vw"
+              />
+            </div>
+          </div>
+          <p class="about_quote" data-reveal="up" style="--reveal-delay: 0.5s">
+            {m.homeQuote}
+          </p>
+        </div>
+
+        <div
+          class="about_content"
+          data-reveal="right"
+          style="--reveal-delay: 0.3s"
+        >
+          <div class="about_lead">
+            <h3 class="about_lead_title">
+              &quot;Direction to perfection&quot;
+            </h3>
+            <p class="about_lead_text">{m.companyDescription}</p>
+          </div>
+          <p class="about_text">{m.companyProcedures}</p>
+          <div class="about_philosophy">
+            <div class="about_philosophy_inner">
+              <h4 class="about_philosophy_title">{m.companyPhilosophyTitle}</h4>
+              <p class="about_text">{m.companyPhilosophyText}</p>
+              <span class="gold-bar" />
+            </div>
+          </div>
+          <div class="about_founder">
+            <div class="about_founder_photo">
+              <Image
+                src={founderImage}
+                alt="Founder"
+                width={128}
+                height={128}
+              />
+            </div>
+            <div>
+              <p class="about_founder_name">{m.founderName}</p>
+              <p class="about_founder_title">{m.founderTitle}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="about_closing" data-reveal="up" style="--reveal-delay: 0.2s">
+        {m.higherLevelQuote}
+      </p>
+    </div>
+  </section>
+)}
+
+<style is:global>
+  @layer components {
+    .about_container {
+      padding-inline: 1rem;
+    }
+
+    .about_layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      gap: 3rem;
+      margin-inline: 1rem;
+
+      @media (width >= 64rem) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5rem;
+      }
+    }
+
+    .about_visual {
+      position: relative;
+    }
+
+    .about_frame {
+      position: relative;
+      z-index: 1;
+      border: 0.0625rem solid var(--brand-500);
+      border-radius: var(--radius-main);
+      box-shadow: 0 0 1.25rem var(--gold-glow);
+      overflow: hidden;
+      transition:
+        transform 300ms,
+        box-shadow 300ms;
+
+      @media (hover: hover) {
+        &:hover {
+          transform: scale(1.03);
+          box-shadow:
+            0 0.625rem 1.5625rem rgb(0 0 0 / 0.25),
+            0 0 0.9375rem var(--brand-500);
+
+          & img {
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+
+    .about_frame_inner {
+      padding: 0.125rem;
+      background: var(--gold-gradient);
+      overflow: hidden;
+
+      & img {
+        aspect-ratio: 3 / 4;
+        border-radius: 0.375rem;
+        object-fit: cover;
+        transition: transform 500ms;
+      }
+    }
+
+    .about_quote {
+      position: absolute;
+      right: 2.5rem;
+      bottom: -2.5rem;
+      z-index: 2;
+      display: none;
+      max-width: 20rem;
+      padding: 2rem;
+      background-color: rgb(249 248 246 / 0.69);
+      color: #312205;
+      border-left: 0.25rem solid var(--light-100);
+      border-radius: 0.25rem;
+      box-shadow:
+        0 1.25rem 1.5625rem -0.3125rem rgb(0 0 0 / 0.1),
+        0 0.5rem 0.625rem -0.375rem rgb(0 0 0 / 0.1);
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      font-weight: 200;
+      line-height: 1.75rem;
+
+      @media (width >= 48rem) {
+        display: flex;
+      }
+
+      @media (width >= 64rem) {
+        max-width: 24rem;
+      }
+    }
+
+    .about_content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .about_lead {
+      padding-left: 1.5rem;
+      border-left: 0.25rem solid var(--brand-500);
+    }
+
+    .about_lead_title {
+      margin-bottom: 1rem;
+      color: var(--brand-500);
+      font-size: 1.5rem;
+      font-weight: var(--primary-bold);
+      line-height: 2rem;
+      text-shadow: 0 0 0.625rem var(--gold-glow);
+
+      @media (width >= 48rem) {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+      }
+    }
+
+    .about_lead_text {
+      font-size: 1.125rem;
+      line-height: 1.40625rem;
+    }
+
+    .about_text {
+      font-size: 1rem;
+      line-height: 1.625;
+    }
+
+    .about_philosophy {
+      padding: 0.125rem;
+      background: var(--gold-gradient);
+      border-radius: var(--radius-main);
+      box-shadow: 0 0 1.25rem var(--gold-glow);
+    }
+
+    .about_philosophy_inner {
+      padding: 1.5rem;
+      background-color: var(--dark-900);
+      border-radius: var(--radius-main);
+    }
+
+    .about_philosophy_title {
+      margin-bottom: 0.75rem;
+      color: var(--brand-500);
+      font-size: 1.25rem;
+      font-weight: var(--primary-bold);
+      line-height: 1.75rem;
+      text-shadow: 0 0 0.625rem rgb(212 175 55 / 0.2);
+    }
+
+    .about_founder {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .about_founder_photo {
+      flex-shrink: 0;
+      width: 4rem;
+      height: 4rem;
+      padding: 0.0625rem;
+      background: var(--gold-gradient);
+      border-radius: 50%;
+      overflow: hidden;
+
+      & img {
+        height: 100%;
+        border-radius: 50%;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        animation: about-pulse 4s ease-in-out infinite;
+      }
+    }
+
+    @keyframes about-pulse {
+      50% {
+        transform: scale(1.03);
+      }
+    }
+
+    .about_founder_name {
+      color: var(--brand-500);
+      font-weight: 600;
+      line-height: 1.5;
+      text-shadow: 0 0 0.3125rem var(--gold-glow);
+    }
+
+    .about_founder_title {
+      font-size: 0.875rem;
+      font-style: italic;
+      font-weight: 200;
+      line-height: 1.25rem;
+    }
+
+    .about_closing {
+      max-width: 56rem;
+      margin: 5rem auto 0;
+      font-size: 1.125rem;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.75rem;
+      text-align: center;
+
+      @media (width >= 48rem) {
+        font-size: 1.5rem;
+        line-height: 2rem;
+      }
+    }
+  }
+</style>

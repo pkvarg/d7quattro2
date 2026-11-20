@@ -1,5 +1,4 @@
 ---
-import Button from "@/components/Button.astro";
 import { ANALYTICS_SRC, ANALYTICS_WEBSITE_ID } from "@/consts.ts";
 import { localizePath, toLocale } from "@/i18n/locales.ts";
 import { getMessages } from "@/i18n/messages.ts";
@@ -17,23 +16,29 @@ const m = getMessages(locale);
 
 {render && (
   <aside
-    class="cookie-consent_wrap theme-dark"
+    class="cookie-consent_wrap"
     aria-label={m.footerCookiePolicy}
     data-analytics-src={ANALYTICS_SRC}
     data-analytics-id={ANALYTICS_WEBSITE_ID}
     hidden
   >
-    <p class="cookie-consent_text text-style-small">
+    <p class="cookie-consent_text">
       {m.cookies}{" "}
       <a href={`${localizePath(locale, "gdpr")}#cookies`}>
         {m.footerPrivacyPolicy}
       </a>
     </p>
     <div class="cookie-consent_actions">
-      <Button data-consent="granted">{m.cookiesAgree}</Button>
-      <Button emphasis="secondary" data-consent="denied">
+      <button class="cookie-consent_button" type="button" data-consent="denied">
         {m.cookiesDisagree}
-      </Button>
+      </button>
+      <button
+        class="cookie-consent_button accept"
+        type="button"
+        data-consent="granted"
+      >
+        {m.cookiesAgree}
+      </button>
     </div>
   </aside>
 )}
@@ -99,15 +104,21 @@ const m = getMessages(locale);
   @layer components {
     .cookie-consent_wrap {
       position: fixed;
-      inset: auto var(--site-margin) var(--space-4) auto;
-      z-index: 200;
+      inset: auto 0 0;
+      z-index: 999;
       display: flex;
-      flex-direction: column;
-      gap: var(--space-4);
-      width: min(28rem, calc(100% - var(--site-margin) * 2));
-      padding: var(--space-4);
-      background-color: var(--background-2);
-      border: var(--border-width) solid var(--border);
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background: rgb(59 58 58 / 0.95);
+      color: #fff;
+      border-top: 0.0625rem solid var(--gold-glow);
+      box-shadow: 0 -0.3125rem 1.25rem rgb(0 0 0 / 0.3);
+      font-size: 1rem;
+      font-weight: 200;
+      line-height: 1.5;
+      backdrop-filter: blur(0.625rem);
 
       &[hidden] {
         display: none;
@@ -115,13 +126,37 @@ const m = getMessages(locale);
     }
 
     .cookie-consent_text {
-      text-box: none;
+      flex: 1 0 18.75rem;
+
+      & a {
+        text-decoration: underline;
+      }
     }
 
     .cookie-consent_actions {
       display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-2);
+      align-items: center;
+    }
+
+    .cookie-consent_button {
+      margin: 0.9375rem 1.5625rem 0.9375rem 0.9375rem;
+      padding: 0.5rem 1.5rem;
+      background: transparent;
+      color: #fff;
+      border: 0.125rem solid var(--brand-500);
+      border-radius: 0.5rem;
+      font: inherit;
+      font-weight: var(--primary-bold);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &.accept {
+        margin: 0.9375rem;
+        padding: 0.625rem 1.5rem;
+        background: #d4ae36;
+        color: #0e0d0d;
+        border: 0;
+      }
     }
   }
 </style>

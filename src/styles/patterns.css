@@ -218,3 +218,128 @@
     opacity: 0.5;
   }
 }
+
+/* Gold accents */
+.text-gold-gradient {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-bar {
+  display: block;
+  width: 3rem;
+  height: 0.25rem;
+  margin-top: 1rem;
+  background: var(--gold-gradient);
+}
+
+.gold-frame {
+  padding: 0.0625rem;
+  background: var(--gold-gradient);
+  border-radius: var(--radius-main);
+  box-shadow: 0 0 1.25rem var(--gold-glow);
+}
+
+/* Page sections */
+.page-section {
+  position: relative;
+  padding-block: 3.25rem 3rem;
+  background-color: var(--dark-900);
+  color: var(--light-100);
+  font-weight: var(--primary-medium);
+  overflow: hidden;
+  scroll-margin-top: 4rem;
+
+  @media (width >= 48rem) {
+    scroll-margin-top: 5rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-block: 6.25rem 6rem;
+    scroll-margin-top: 6rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 0.25rem;
+      background: var(--gold-gradient);
+      box-shadow: 0 0.1875rem 0.625rem rgb(212 175 55 / 0.4);
+    }
+  }
+}
+
+.page-container {
+  position: relative;
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+
+  @media (width >= 40rem) and (width < 48rem) {
+    max-width: 40rem;
+  }
+
+  @media (width >= 48rem) and (width < 64rem) {
+    max-width: 48rem;
+  }
+
+  @media (width >= 64rem) and (width < 80rem) {
+    max-width: 64rem;
+  }
+}
+
+/* Scroll reveal */
+@media (prefers-reduced-motion: no-preference) {
+  .js-reveal [data-reveal] {
+    opacity: 0;
+    transition:
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+
+  .js-reveal [data-reveal="down"] {
+    transform: translateY(-1.875rem);
+  }
+
+  .js-reveal [data-reveal="up"] {
+    transform: translateY(1.25rem);
+  }
+
+  .js-reveal [data-reveal="left"] {
+    transform: translateX(-6.25rem);
+  }
+
+  .js-reveal [data-reveal="right"] {
+    transform: translateX(6.25rem);
+  }
+
+  .js-reveal [data-reveal="scale"] {
+    transform: scale(0.85);
+  }
+
+  .js-reveal [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Untrimmed text boxes, matching the original line metrics */
+.page-section,
+.hero-home_wrap,
+.nav_wrap,
+.footer_wrap,
+.cookie-consent_wrap,
+.construction-notice_wrap {
+  text-box: none;
+
+  & :is(p, h1, h2, h3, h4, h5, h6, li, address, label) {
+    text-box: none;
+    text-wrap: wrap;
+    overflow-wrap: normal;
+    hyphens: manual;
+  }
+}

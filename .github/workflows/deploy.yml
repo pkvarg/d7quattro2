@@ -1,8 +1,8 @@
-name: Deploy
+name: Deploy original design
 
 on:
   push:
-    branches: [main]
+    branches: [orig_golden]
   workflow_dispatch:
 
 jobs:
@@ -23,4 +23,4 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
           local-dir: dist/
-          server-dir: ${{ vars.FTP_DIR || 'domains/d7quattro.at/public_html/astro/' }}
+          server-dir: domains/d7quattro.at/public_html/original/

@@ -1,0 +1,50 @@
+---
+import { toLocale, type Locale } from "@/i18n/locales.ts";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+}
+
+const { render = true } = Astro.props;
+
+const texts: Record<Locale, string> = {
+  sk: "Web je vo výstavbe – obsah sa ešte dopĺňa.",
+  de: "Diese Website befindet sich im Aufbau – Inhalte werden noch ergänzt.",
+  en: "This website is under construction – content is still being added.",
+};
+---
+
+{render && (
+  <p class="construction-notice_wrap" role="status">
+    {texts[toLocale(Astro.currentLocale)]}
+  </p>
+)}
+
+<style is:global>
+  @layer components {
+    .construction-notice_wrap {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      z-index: 40;
+      max-width: calc(100vw - 2rem);
+      padding: 0.5rem 1rem;
+      background-color: rgb(59 58 58 / 0.95);
+      color: #d4ae36;
+      border: 0.0625rem solid rgb(212 174 54 / 0.6);
+      border-radius: 0.375rem;
+      box-shadow:
+        0 0.625rem 0.9375rem -0.1875rem rgb(0 0 0 / 0.1),
+        0 0.25rem 0.375rem -0.25rem rgb(0 0 0 / 0.1);
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1rem;
+
+      @media (width >= 48rem) {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+      }
+    }
+  }
+</style>

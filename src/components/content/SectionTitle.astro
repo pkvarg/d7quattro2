@@ -1,0 +1,136 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Section heading. */
+  title: string;
+  /** Text below the heading. */
+  text?: string;
+  /** Heading size. */
+  variant?: "main" | "sub";
+  /** Set the text in light italics. */
+  italic?: boolean;
+  /** Pull the text up against the heading. */
+  tight?: boolean;
+}
+
+const {
+  render = true,
+  title,
+  text,
+  variant = "main",
+  italic = false,
+  tight = false,
+} = Astro.props;
+
+const Tag = variant === "main" ? "h2" : "h3";
+---
+
+{render && title && (
+  <div class:list={["section-title_wrap", variant, tight && "tight"]}>
+    <Tag class="section-title_heading text-gold-gradient" data-reveal="down">
+      {title}
+      <span class="section-title_rule" />
+    </Tag>
+    {text && (
+      <p
+        class:list={["section-title_text", italic && "italic"]}
+        data-reveal="up"
+        style="--reveal-delay: 0.2s"
+      >
+        {text}
+      </p>
+    )}
+    <slot />
+  </div>
+)}
+
+<style is:global>
+  @layer components {
+    .section-title_wrap {
+      margin-bottom: 4rem;
+      text-align: center;
+
+      &.sub {
+        margin-bottom: 0;
+      }
+    }
+
+    .section-title_heading {
+      position: relative;
+      display: inline-block;
+      font-size: 1.71875rem;
+      font-weight: var(--primary-bold);
+      line-height: 1.5;
+
+      @media (width >= 64rem) {
+        font-size: 3.125rem;
+      }
+    }
+
+    .section-title_rule {
+      display: block;
+      width: 80%;
+      height: 0.1875rem;
+      margin: 0.5rem auto 0;
+      background: var(--gold-gradient);
+      box-shadow: 0 0 0.625rem rgb(212 175 55 / 0.5);
+    }
+
+    .section-title_text {
+      margin: 2rem 1rem 0;
+      font-size: 1.34375rem;
+      font-weight: var(--primary-medium);
+      line-height: 2rem;
+
+      @media (width >= 64rem) {
+        margin-inline: 10%;
+        font-size: 1.5625rem;
+      }
+
+      &.italic {
+        font-weight: 300;
+        font-style: italic;
+      }
+    }
+
+    .section-title_wrap.tight {
+      & .section-title_heading {
+        margin-bottom: 1.5rem;
+      }
+
+      & .section-title_text {
+        margin-top: 0;
+      }
+    }
+
+    .section-title_wrap.sub {
+      & .section-title_heading {
+        display: block;
+        margin-bottom: 1.5rem;
+        font-size: 1.875rem;
+
+        @media (width >= 64rem) {
+          font-size: 2.5rem;
+        }
+      }
+
+      & .section-title_rule {
+        width: 60%;
+        height: 0.125rem;
+        box-shadow: 0 0 0.5rem rgb(212 175 55 / 0.4);
+      }
+
+      & .section-title_text {
+        margin: 1.5rem 1rem 3rem;
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+
+        @media (width >= 64rem) {
+          margin-inline: 15%;
+          font-size: 1.25rem;
+        }
+      }
+    }
+  }
+</style>

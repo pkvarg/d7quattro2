@@ -1,18 +1,21 @@
 /* Design tokens */
 :root {
   /* Swatches */
-  --light-100: #fbf8f1;
-  --light-200: #f4efe4;
-  --light-300: #e8e0cf;
-  --dark-700: #313b5e;
-  --dark-800: #232c4a;
-  --dark-900: #121a30;
-  --brand-500: #f1d7a3;
+  --light-100: #ffffff;
+  --light-200: #f0eeea;
+  --light-300: #e7f0fe;
+  --dark-700: #6f6d6b;
+  --dark-800: #454444;
+  --dark-900: #3b3a3a;
+  --brand-500: #d4af37;
+  --gold-gradient: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+  --gold-glow: rgb(212 175 55 / 0.3);
+  --script-family: var(--font-great-vibes, cursive);
   --brand-text: var(--dark-900);
 
   /* Typography primitives */
-  --primary-family: var(--font-figtree, system-ui, sans-serif);
-  --display-family: var(--font-gilda, Georgia, serif);
+  --primary-family: var(--font-newsreader, Georgia, serif);
+  --display-family: var(--font-newsreader, Georgia, serif);
   --display-regular: 400;
   --primary-regular: 400;
   --primary-medium: 500;
@@ -43,8 +46,8 @@
   --open-ease: var(--hover-ease);
 
   /* Radius */
-  --radius-small: 0rem;
-  --radius-main: 0rem;
+  --radius-small: 0.375rem;
+  --radius-main: 0.5rem;
   --radius-round: 100vw;
 
   /* Fluid scale range */
@@ -158,7 +161,7 @@
 
   --text-main: clamp(var(--text-main-min) / 16 * 1rem, ((var(--text-main-min) - ((var(--text-main-max) - var(--text-main-min)) / (var(--viewport-max) - var(--viewport-min)) * var(--viewport-min))) / 16 * 1rem + ((var(--text-main-max) - var(--text-main-min)) / (var(--viewport-max) - var(--viewport-min))) * 100vw), var(--text-main-max) / 16 * 1rem);
   --text-main-min: 16;
-  --text-main-max: 18;
+  --text-main-max: 16;
   --text-main-line-height: var(--line-height-huge);
   --text-main-letter-spacing: var(--letter-spacing-normal);
   --text-main-text-transform: none;

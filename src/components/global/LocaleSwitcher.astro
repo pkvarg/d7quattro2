@@ -1,8 +1,8 @@
 ---
 import {
-  LOCALES,
   LOCALE_NAMES,
   LOCALE_TAGS,
+  LOCALES,
   localizePath,
   toLocale,
   translatePath,
@@ -22,7 +22,9 @@ const { render = true, translations = LOCALES } = Astro.props;
 const current = toLocale(Astro.currentLocale);
 const t = useTranslations(current);
 
-const links = LOCALES.map((locale) => ({
+const order: readonly Locale[] = ["de", "sk", "en"];
+
+const links = order.map((locale) => ({
   locale,
   href:
     (translations.includes(locale) &&
@@ -54,31 +56,51 @@ const links = LOCALES.map((locale) => ({
   @layer components {
     .locale-switcher_wrap {
       display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      padding: 0 var(--site-margin) var(--space-4);
-      font-size: var(--text-small);
-      font-weight: var(--primary-medium);
-      text-transform: uppercase;
-
-      @media (width >= 48rem) {
-        padding: 0;
-      }
+      gap: 1rem;
+      margin-right: 0.5rem;
+      padding: 0.25rem;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      list-style: none;
     }
 
     .locale-switcher_link {
+      position: relative;
       display: inline-block;
-      margin: -0.375rem -0.25rem;
-      padding: 0.375rem 0.25rem;
-      color: color-mix(in lab, currentcolor 60%, transparent);
-      text-decoration: none;
-      transition: color var(--hover-duration) var(--hover-ease);
-      &[aria-current="true"] {
-        color: var(--text);
+      padding: 0.25rem 0.5rem;
+      font-weight: var(--primary-medium);
+      text-transform: uppercase;
+      transition:
+        color 300ms,
+        transform 300ms;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -0.25rem;
+        left: 0;
+        width: 0;
+        height: 0.125rem;
+        background-color: var(--brand-500);
+        transition: width 300ms;
       }
+
+      &[aria-current="true"] {
+        color: var(--brand-500);
+
+        &::after {
+          width: 100%;
+        }
+      }
+
       @media (hover: hover) {
         &:hover {
-          color: var(--text);
+          color: var(--brand-500);
+          transform: scale(1.1);
+
+          &::after {
+            width: 100%;
+          }
         }
       }
     }

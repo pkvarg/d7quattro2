@@ -1,63 +1,64 @@
 ---
 import { Image } from "astro:assets";
-import Button from "@/components/Button.astro";
-import ButtonWrapper from "@/components/wrapper/ButtonWrapper.astro";
-import Roofline from "@/components/content/Roofline.astro";
 
 interface Props {
   /** Set to `false` to omit the component. */
   render?: boolean;
-  /** Short line above the heading. */
-  kicker?: string;
+  /** Script line above the heading. */
+  title: string;
   /** Page heading. */
   heading: string;
-  /** Body text. */
-  text?: string;
-  /** Button label. Omit to hide the button. */
-  buttonLabel?: string;
-  /** Button destination. */
-  buttonHref?: string;
+  /** Gold-accented end of the heading. */
+  headingAccent?: string;
+  /** Body text lines. */
+  lines?: string[];
   /** Background image. */
   image: ImageMetadata;
-  /** Image alt text. Omit for decorative images. */
-  imageAlt?: string;
 }
 
 const {
   render = true,
-  kicker,
+  title,
   heading,
-  text,
-  buttonLabel,
-  buttonHref,
+  headingAccent,
+  lines = [],
   image,
-  imageAlt = "",
 } = Astro.props;
 ---
 
 {render && heading && (
-  <section class="hero-home_wrap theme-dark">
-    <Image
-      class="hero-home_image"
-      src={image}
-      alt={imageAlt}
-      widths={[768, 1280, 1920, image.width]}
-      sizes="100vw"
-      loading="eager"
-      fetchpriority="high"
-    />
-    <div class="hero-home_shade" />
+  <section class="hero-home_wrap">
+    <div class="hero-home_media">
+      <Image
+        class="hero-home_image"
+        src={image}
+        alt=""
+        widths={[768, 1280, 1920, image.width]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="hero-home_shade" />
+    </div>
     <div class="hero-home_content">
-      <Roofline animated />
-      {kicker && <p class="hero-home_kicker text-style-large">{kicker}</p>}
-      <h1 class="hero-home_title text-style-h1">{heading}</h1>
-      {text && <p class="hero-home_text text-style-large">{text}</p>}
-      {buttonLabel && (
-        <ButtonWrapper>
-          <Button element="link" href={buttonHref}>
-            {buttonLabel}
-          </Button>
-        </ButtonWrapper>
+      <p class="hero-home_title">{title}</p>
+      <h1 class="hero-home_heading">
+        {heading}{" "}
+        {headingAccent && (
+          <span class="hero-home_accent text-gold-gradient">
+            {headingAccent}
+          </span>
+        )}
+      </h1>
+      {lines.length > 0 && (
+        <p class="hero-home_text">
+          {lines.map((line, index) => (
+            <>
+              {index > 0 && <br />}
+              {line}
+            </>
+          ))}
+        </p>
       )}
     </div>
   </section>
@@ -67,71 +68,139 @@ const {
   @layer components {
     .hero-home_wrap {
       position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      min-height: 100svh;
-      padding: calc(var(--nav-height) + var(--space-8)) var(--site-margin)
-        var(--space-8);
-      overflow: clip;
+      width: 100%;
+      height: 100vh;
+      background-color: #000;
+      color: var(--light-100);
+      overflow: hidden;
+    }
+
+    .hero-home_media {
+      position: absolute;
+      inset: 0;
     }
 
     .hero-home_image {
       position: absolute;
-      inset: auto 0 0;
-      height: 120%;
-      object-position: center bottom;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+
+      @media (width > 48rem) {
+        object-fit: fill;
+      }
     }
 
     .hero-home_shade {
-      --_side: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--dark-900) 55%, transparent) 0%,
-        color-mix(in srgb, var(--dark-900) 35%, transparent) 100%
-      );
       position: absolute;
       inset: 0;
-      background:
-        var(--_side),
-        linear-gradient(
-          180deg,
-          color-mix(in srgb, var(--dark-900) 80%, transparent) 0%,
-          color-mix(in srgb, var(--dark-900) 8%, transparent) 30%,
-          color-mix(in srgb, var(--dark-900) 34%, transparent) 60%,
-          color-mix(in srgb, var(--dark-900) 96%, transparent) 100%
-        );
-
-      @media (width >= 48rem) {
-        --_side: linear-gradient(
-          90deg,
-          color-mix(in srgb, var(--dark-900) 86%, transparent) 0%,
-          color-mix(in srgb, var(--dark-900) 62%, transparent) 38%,
-          transparent 72%
-        );
-      }
+      background: linear-gradient(
+        to top,
+        rgb(11 11 11 / 0.196),
+        rgb(10 10 10 / 0.569),
+        rgb(10 10 10 / 0.067)
+      );
     }
 
     .hero-home_content {
       position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-5);
-      width: 100%;
-      max-width: var(--max-width-main);
-      margin-inline: auto;
-    }
+      margin: 45% 1rem 0;
 
-    .hero-home_kicker {
-      color: var(--heading-accent);
+      @media (width >= 64rem) {
+        margin: 17.5% 15% 0;
+      }
     }
 
     .hero-home_title {
-      max-width: 16ch;
+      margin-bottom: 1rem;
+      font-family: var(--script-family);
+      font-size: 1.875rem;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: 0.09em;
+      text-shadow: 0.0625rem 0.0625rem 0.125rem rgb(0 0 0 / 0.3);
+
+      @media (width >= 64rem) {
+        font-size: 6.25rem;
+      }
+    }
+
+    .hero-home_heading {
+      margin-bottom: 1rem;
+      font-size: 1.40625rem;
+      font-weight: var(--primary-bold);
+      line-height: 1.5;
+
+      @media (width >= 64rem) {
+        font-size: 3.125rem;
+      }
     }
 
     .hero-home_text {
-      max-width: 50ch;
+      margin-bottom: 2rem;
+      font-size: 1.25rem;
+      font-weight: var(--primary-medium);
+      line-height: 1.5;
+
+      @media (width >= 64rem) {
+        font-size: 1.5625rem;
+        line-height: 1.75rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-home_media {
+        animation: hero-home-media 1.2s ease-out both;
+      }
+
+      .hero-home_title,
+      .hero-home_heading,
+      .hero-home_text {
+        animation: hero-home-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      .hero-home_title {
+        animation-delay: 0.3s;
+      }
+
+      .hero-home_heading {
+        animation-delay: 0.55s;
+      }
+
+      .hero-home_text {
+        animation-delay: 0.8s;
+      }
+
+      .hero-home_accent {
+        display: inline-block;
+        animation: hero-home-accent 0.6s ease-out 1.35s both;
+      }
+    }
+
+    @keyframes hero-home-media {
+      from {
+        opacity: 0.4;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes hero-home-rise {
+      from {
+        opacity: 0;
+        transform: translateY(3.125rem);
+      }
+    }
+
+    @keyframes hero-home-accent {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
     }
   }
 </style>

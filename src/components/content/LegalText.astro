@@ -1,0 +1,107 @@
+---
+import type { LegalText } from "@/types.ts";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Legal page content for the current locale. */
+  text: LegalText;
+}
+
+const { render = true, text } = Astro.props;
+---
+
+{render && text && (
+  <div class="legal-text_wrap">
+    <h1 class="legal-text_title">{text.title}</h1>
+    <p class="legal-text_effective">{text.effective}</p>
+    {text.intro && <p class="legal-text_intro">{text.intro}</p>}
+    {text.sections.map((section) => (
+      <section class="legal-text_section" id={section.id}>
+        <h2 class="legal-text_heading">{section.title}</h2>
+        {section.body.map((block) =>
+          Array.isArray(block) ? (
+            <ul class="legal-text_list">
+              {block.map((line) => (
+                <li>{line}</li>
+              ))}
+            </ul>
+          ) : (
+            <p class="legal-text_paragraph">{block}</p>
+          ),
+        )}
+      </section>
+    ))}
+  </div>
+)}
+
+<style is:global>
+  @layer components {
+    .legal-text_wrap {
+      max-width: 48rem;
+      margin-inline: auto;
+      padding: 3rem 1.5rem 5rem;
+      color: #3b3a3a;
+      font-size: 1rem;
+      font-weight: 200;
+      line-height: 1.625;
+      text-box: none;
+
+      & :is(p, h1, h2, li) {
+        text-box: none;
+        text-wrap: wrap;
+        overflow-wrap: normal;
+        hyphens: manual;
+      }
+    }
+
+    .legal-text_title {
+      margin-bottom: 0.5rem;
+      font-size: 1.875rem;
+      font-weight: var(--primary-bold);
+      line-height: 2.25rem;
+
+      @media (width >= 64rem) {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+      }
+    }
+
+    .legal-text_effective {
+      margin-bottom: 2rem;
+      color: #7a6b52;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+
+    .legal-text_intro {
+      margin-bottom: 2rem;
+    }
+
+    .legal-text_section {
+      margin-bottom: 2rem;
+      scroll-margin-top: 7rem;
+    }
+
+    .legal-text_heading {
+      margin-bottom: 0.75rem;
+      color: #b38728;
+      font-size: 1.25rem;
+      font-weight: var(--primary-bold);
+      line-height: 1.75rem;
+    }
+
+    .legal-text_paragraph {
+      margin-bottom: 0.75rem;
+    }
+
+    .legal-text_list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin: 0 0 0.75rem 1.5rem;
+      padding: 0;
+      list-style: disc;
+    }
+  }
+</style>

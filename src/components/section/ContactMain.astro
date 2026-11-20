@@ -1,0 +1,497 @@
+---
+import SectionTitle from "@/components/content/SectionTitle.astro";
+import GoldButton from "@/components/content/GoldButton.astro";
+import { localizePath, toLocale } from "@/i18n/locales.ts";
+import { getMessages } from "@/i18n/messages.ts";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Endpoint that receives the message as JSON. */
+  action: string;
+}
+
+const { render = true, action } = Astro.props;
+
+const locale = toLocale(Astro.currentLocale);
+const m = getMessages(locale);
+
+const subjects = {
+  sk: "Správa z d7quattro.at",
+  de: "Nachricht von d7quattro.at",
+  en: "Message from d7quattro.at",
+};
+---
+
+{render && action && (
+  <section class="contact_wrap page-section" id="contact">
+    <svg
+      class="contact_pattern"
+      xmlns="http://www.w3.org/2000/svg"
+      width="100%"
+      height="100%"
+      viewBox="0 0 1200 800"
+      aria-hidden="true"
+    >
+      <defs>
+        <pattern
+          id="contact-grid"
+          width="100"
+          height="100"
+          patternUnits="userSpaceOnUse"
+        >
+          <path
+            d="M 100 0 L 0 0 0 100"
+            fill="none"
+            stroke="white"
+            stroke-width="1"
+          />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#contact-grid)" />
+    </svg>
+
+    <div class="page-container">
+      <SectionTitle title={m.getInTouch}>
+        <div
+          class="contact_intro"
+          data-reveal="up"
+          style="--reveal-delay: 0.2s"
+        >
+          <h3 class="contact_intro_title">{m.discussDreamHome}</h3>
+          <p class="contact_intro_text">{m.readyToTransform}</p>
+        </div>
+        <p class="contact_note sent" role="status">
+          <strong>{m.contactSuccess}</strong>
+        </p>
+        <p class="contact_note failed" role="alert">
+          <strong>{m.contactError}</strong>
+        </p>
+      </SectionTitle>
+
+      <div class="contact_layout">
+        <div class="contact_panel gold-frame" data-reveal="left">
+          <form
+            class="contact_form"
+            action={action}
+            method="post"
+            data-sending={`${m.contactSending}...`}
+          >
+            <div class="contact_row">
+              <div class="contact_field">
+                <label for="contact-name">{m.contactName}</label>
+                <input
+                  id="contact-name"
+                  type="text"
+                  name="name"
+                  autocomplete="name"
+                  required
+                />
+              </div>
+              <div class="contact_field">
+                <label for="contact-email">{m.contactEmail}</label>
+                <input
+                  id="contact-email"
+                  type="email"
+                  name="email"
+                  autocomplete="email"
+                  spellcheck="false"
+                  required
+                />
+              </div>
+            </div>
+            <div class="contact_field">
+              <label for="contact-phone">{m.contactPhone}</label>
+              <input
+                id="contact-phone"
+                type="tel"
+                name="phone"
+                autocomplete="tel"
+              />
+            </div>
+            <div class="contact_field">
+              <label for="contact-message">{m.contactMessage}</label>
+              <textarea
+                id="contact-message"
+                name="mailMessage"
+                rows="5"
+                autocomplete="off"
+                required
+              />
+            </div>
+            <input type="hidden" name="locale" value={locale} />
+            <input type="hidden" name="origin" value="D7QUATTRO" />
+            <input type="hidden" name="subject" value={subjects[locale]} />
+            <input
+              class="sr-only"
+              type="text"
+              name="website"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
+            <p class="contact_agree">
+              {m.contactAgree}{" "}
+              <a
+                href={`${localizePath(locale, "gdpr")}#kontaktformular`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {m.contactGdpr}
+              </a>
+              .
+            </p>
+            <div class="contact_submit">
+              <GoldButton type="submit">{m.contactSend}</GoldButton>
+            </div>
+          </form>
+        </div>
+
+        <div
+          class="contact_panel gold-frame"
+          data-reveal="right"
+          style="--reveal-delay: 0.3s"
+        >
+          <div class="contact_info">
+            <h3 class="contact_info_title text-gold-gradient">
+              {m.contactInformation}
+            </h3>
+            <ul class="contact_info_list">
+              <li class="contact_info_item">
+                <span class="contact_info_icon">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                <div>
+                  <p class="contact_info_label">Email</p>
+                  <a class="contact_info_value" href="mailto:info@d7quattro.at">
+                    info@d7quattro.at
+                  </a>
+                </div>
+              </li>
+              <li class="contact_info_item">
+                <span class="contact_info_icon">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M20 15.5C18.8 15.5 17.5 15.3 16.4 14.9C16.1 14.8 15.7 14.9 15.5 15.1L13.2 17.4C10.4 15.9 8 13.6 6.6 10.8L8.9 8.5C9.1 8.3 9.2 8 9.1 7.7C8.7 6.6 8.5 5.3 8.5 4.1C8.5 3.5 8 3 7.4 3H4.1C3.5 3 3 3.5 3 4.1C3 13.4 10.6 21 19.9 21C20.5 21 21 20.5 21 19.9V16.6C21 16 20.5 15.5 19.9 15.5H20Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                <div>
+                  <p class="contact_info_label">{m.contactPhone}</p>
+                  <a class="contact_info_value" href="tel:+436763749858">
+                    +43 676 374 9858
+                  </a>
+                </div>
+              </li>
+              <li class="contact_info_item">
+                <span class="contact_info_icon">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                <div>
+                  <p class="contact_info_label">{m.address}</p>
+                  <address class="contact_info_value">
+                    Feldgasse 3
+                    <br />
+                    2412 Wolfsthal
+                    <br />
+                    {m.austria}
+                  </address>
+                </div>
+              </li>
+            </ul>
+            <span class="gold-bar" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<script>
+  const section = document.querySelector<HTMLElement>(".contact_wrap");
+  const form = section?.querySelector<HTMLFormElement>(".contact_form");
+  const submit = form?.querySelector<HTMLButtonElement>('[type="submit"]');
+  const label = submit?.querySelector<HTMLElement>(".gold-button_label");
+
+  if (section && form && submit && label) {
+    const idle = label.textContent ?? "";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!form.checkValidity()) return;
+
+      section.dataset.state = "sending";
+      submit.disabled = true;
+      label.textContent = form.dataset.sending ?? idle;
+
+      try {
+        const data = new FormData(form);
+        const trapped = !!data.get("website");
+        data.delete("website");
+
+        if (!trapped) {
+          const answer = await fetch(form.action, {
+            method: "post",
+            body: JSON.stringify(Object.fromEntries(data)),
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          });
+          if (!answer.ok) throw new Error(String(answer.status));
+        }
+
+        section.dataset.state = "sent";
+        form.reset();
+      } catch {
+        section.dataset.state = "failed";
+      }
+
+      submit.disabled = false;
+      label.textContent = idle;
+      section.scrollIntoView({ behavior: "smooth" });
+    });
+  }
+</script>
+
+<style is:global>
+  @layer components {
+    .contact_pattern {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.05;
+    }
+
+    .contact_intro {
+      margin-top: 2rem;
+    }
+
+    .contact_intro_title {
+      margin-bottom: 1rem;
+      font-size: 1.34375rem;
+      font-weight: var(--primary-medium);
+      line-height: 1.5;
+
+      @media (width >= 64rem) {
+        font-size: 1.875rem;
+      }
+    }
+
+    .contact_intro_text {
+      margin-inline: 1rem;
+      font-size: 1.15625rem;
+      line-height: 1.5;
+
+      @media (width >= 64rem) {
+        margin-inline: 10%;
+        font-size: 1.40625rem;
+      }
+    }
+
+    .contact_note {
+      display: none;
+      margin: 3rem 0 1rem;
+      padding-inline: 1rem;
+      font-size: 1.5625rem;
+      line-height: 1.5;
+
+      &.sent {
+        color: #16a34a;
+      }
+
+      &.failed {
+        color: #ef4444;
+      }
+    }
+
+    .contact_wrap[data-state="sent"] .contact_note.sent,
+    .contact_wrap[data-state="failed"] .contact_note.failed {
+      display: block;
+    }
+
+    .contact_layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      margin-inline: 1rem;
+
+      @media (width >= 64rem) {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    .contact_panel {
+      display: flex;
+
+      @media (width >= 64rem) {
+        grid-column: span 2;
+
+        &:first-child {
+          grid-column: span 3;
+        }
+      }
+    }
+
+    .contact_form,
+    .contact_info {
+      width: 100%;
+      padding: 1.5rem;
+      background-color: var(--dark-900);
+      border-radius: var(--radius-main);
+
+      @media (width >= 64rem) {
+        padding: 2rem;
+      }
+    }
+
+    .contact_row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+
+      @media (width >= 48rem) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      & .contact_field {
+        margin-bottom: 0;
+      }
+    }
+
+    .contact_field {
+      margin-bottom: 1.5rem;
+
+      &:has(textarea) {
+        padding-bottom: 0.5rem;
+      }
+
+      & label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: var(--primary-bold);
+        line-height: 1.5;
+      }
+
+      & input,
+      & textarea {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 0.5rem;
+        background-color: #e7f0fe;
+        color: #7a6b52;
+        border: 0.0625rem solid rgb(212 175 55 / 0.25);
+        border-radius: var(--radius-small);
+        font: inherit;
+        font-size: 1.125rem;
+        font-weight: 200;
+        line-height: 1.75rem;
+      }
+
+      & textarea {
+        padding: 0 0.125rem;
+        resize: vertical;
+
+        @media (width >= 64rem) {
+          padding: 0.25rem 0.5rem;
+        }
+      }
+    }
+
+    .contact_agree {
+      margin-top: 2rem;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+
+      @media (width >= 64rem) {
+        font-size: 1.09375rem;
+      }
+
+      & a {
+        color: var(--brand-500);
+        text-decoration: underline;
+        transition: color 300ms;
+
+        @media (hover: hover) {
+          &:hover {
+            color: var(--light-100);
+          }
+        }
+      }
+    }
+
+    .contact_submit {
+      margin-top: 2rem;
+    }
+
+    .contact_info_title {
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+      font-weight: var(--primary-bold);
+      line-height: 2rem;
+    }
+
+    .contact_info_list {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 0;
+      list-style: none;
+    }
+
+    .contact_info_item {
+      display: flex;
+      align-items: center;
+    }
+
+    .contact_info_icon {
+      flex-shrink: 0;
+      margin-right: 1rem;
+      padding: 0.75rem;
+      background-color: rgb(255 255 255 / 0.05);
+      color: var(--brand-500);
+      border: 0.0625rem solid var(--brand-500);
+      border-radius: 50%;
+
+      & svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+
+    .contact_info_label {
+      color: rgb(255 255 255 / 0.6);
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+
+    .contact_info_value {
+      font-style: normal;
+      line-height: 1.5;
+      transition: color 150ms;
+
+      @media (hover: hover) {
+        &:hover {
+          color: var(--brand-500);
+        }
+      }
+    }
+
+    .contact_info .gold-bar {
+      margin-top: 2rem;
+    }
+  }
+</style>

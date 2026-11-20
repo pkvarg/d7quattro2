@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import NavLink from "@/components/global/NavLink.astro";
 import logo from "@/assets/logo/d7bau-white.png";
 import LocaleSwitcher from "@/components/global/LocaleSwitcher.astro";
 import { SITE_NAME } from "@/consts.ts";
@@ -11,26 +10,54 @@ import { getMessages } from "@/i18n/messages.ts";
 interface Props {
   /** Set to `false` to omit the component. */
   render?: boolean;
-  /** Fix the nav over the page. */
-  overlap?: boolean;
+  /** `main` fixes the full menu over the page; `pages` is a plain bar with the logo and languages. */
+  variant?: "main" | "pages";
   /** Locales this page exists in. Defaults to every locale. */
   translations?: readonly Locale[];
 }
 
-const { render = true, overlap = false, translations } = Astro.props;
+const { render = true, variant = "main", translations } = Astro.props;
 
 const locale = toLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 const m = getMessages(locale);
 const home = localizePath(locale);
+
+const links = [
+  { label: m.navAboutUs, href: `${home}#about` },
+  { label: m.navProject, href: `${home}#project` },
+  { label: m.navPrices, href: `${home}#prices` },
+  { label: m.navContact, href: `${home}#contact` },
+];
 ---
 
-{render && (
-  <header class:list={["nav_wrap", "theme-dark", overlap && "overlap"]}>
+{render && variant === "pages" && (
+  <header class="nav_wrap pages">
+    <a class="nav_logo" href={home} aria-label={SITE_NAME}>
+      <Image src={logo} alt="" width={250} loading="eager" />
+    </a>
+    <LocaleSwitcher translations={translations} />
+  </header>
+)}
+
+{render && variant === "main" && (
+  <header class="nav_wrap">
     <div class="nav_inner">
       <a class="nav_logo" href={home} aria-label={SITE_NAME}>
-        <Image src={logo} alt="" width={240} loading="eager" />
+        <Image src={logo} alt="" width={250} loading="eager" />
       </a>
+      <nav class="nav_desktop" aria-label={t("nav.main")}>
+        <ul class="nav_links">
+          {links.map((link) => (
+            <li>
+              <a class="nav_link" href={link.href}>
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <LocaleSwitcher translations={translations} />
+      </nav>
       <button
         class="nav_toggle"
         type="button"
@@ -38,293 +65,276 @@ const home = localizePath(locale);
         aria-expanded="false"
         aria-controls="nav-menu"
       >
-        <span class="nav_toggle_icon" />
+        <span class="nav_toggle_icon">
+          <span />
+          <span />
+          <span />
+        </span>
       </button>
-      <nav class="nav_menu" id="nav-menu" aria-label={t("nav.main")}>
-        <div class="nav_menu_inner">
-          <ul class="nav_links">
-            <NavLink href={`${home}#project`}>{m.navProject}</NavLink>
-            <NavLink href={`${home}#prices`}>{m.navPrices}</NavLink>
-            <NavLink href={`${home}#about`}>{m.navAboutUs}</NavLink>
-            <NavLink href={`${home}#contact`}>{m.navContact}</NavLink>
-          </ul>
-          <LocaleSwitcher translations={translations} />
-        </div>
-      </nav>
     </div>
+    <nav class="nav_menu" id="nav-menu" aria-label={t("nav.menu")}>
+      <ul class="nav_menu_links">
+        {links.map((link) => (
+          <li>
+            <a class="nav_menu_link" href={link.href}>
+              <span>{link.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <LocaleSwitcher translations={translations} />
+    </nav>
   </header>
 )}
-
-{/* No-JS fallback */}
-<noscript>
-  <style>
-    .nav_toggle {
-      display: none;
-    }
-    .nav_menu {
-      grid-template-rows: 1fr;
-      visibility: visible;
-    }
-    .nav_menu_inner {
-      opacity: 1;
-    }
-  </style>
-</noscript>
 
 <script>
   const nav = document.querySelector<HTMLElement>(".nav_wrap");
   const toggle = nav?.querySelector<HTMLButtonElement>(".nav_toggle");
+  const menu = nav?.querySelector<HTMLElement>(".nav_menu");
 
-  if (nav && toggle) {
+  if (nav && toggle && menu) {
     const setOpen = (open: boolean) => {
-      nav.classList.toggle("open", open);
+      nav.classList.toggle("is-open", open);
       toggle.setAttribute("aria-expanded", String(open));
+      menu.inert = !open;
     };
 
-    toggle.addEventListener("click", () => {
-      setOpen(toggle.getAttribute("aria-expanded") !== "true");
-    });
+    setOpen(false);
 
-    nav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => setOpen(false));
+    toggle.addEventListener("click", () =>
+      setOpen(!nav.classList.contains("is-open")),
+    );
+
+    menu.addEventListener("click", (event) => {
+      if ((event.target as HTMLElement).closest("a")) setOpen(false);
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && nav.classList.contains("open")) {
+      if (event.key === "Escape" && nav.classList.contains("is-open")) {
         setOpen(false);
         toggle.focus();
       }
     });
 
-    document.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!nav.classList.contains("open") || !(target instanceof Node)) return;
-      if (!nav.contains(target)) setOpen(false);
-    });
-
-    const setScrolled = () =>
-      nav.classList.toggle("scrolled", window.scrollY > 24);
-    setScrolled();
-    window.addEventListener("scroll", setScrolled, { passive: true });
-
-    window
-      .matchMedia("(width >= 48rem)")
-      .addEventListener("change", (event) => {
-        if (event.matches) setOpen(false);
-      });
+    const onScroll = () => nav.classList.toggle("scrolled", scrollY > 10);
+    onScroll();
+    addEventListener("scroll", onScroll, { passive: true });
   }
 </script>
 
 <style is:global>
   @layer components {
-    :target {
-      scroll-margin-top: calc(var(--nav-height) + var(--space-4));
-    }
-
     .nav_wrap {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      padding-inline: var(--site-margin);
-      background-color: var(--background);
-      color: var(--text);
-      border-bottom: var(--border-width) solid var(--border);
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 50;
+      padding-block: 0.75rem;
+      background-color: #3c3b3b;
+      color: var(--light-100);
+      border-bottom: 0.25rem solid transparent;
+      border-image-source: var(--gold-gradient);
+      border-image-slice: 1;
+      transition: box-shadow 300ms ease-in-out;
 
-      transition:
-        background-color var(--open-duration) var(--open-ease),
-        border-color var(--open-duration) var(--open-ease);
-
-      &.overlap {
-        position: fixed;
-        inset-inline: 0;
-      }
-
-      &.overlap:not(.scrolled, .open) {
-        background-color: transparent;
-        border-bottom-color: transparent;
+      &.scrolled {
+        box-shadow:
+          0 0.25rem 0.375rem -0.0625rem rgb(0 0 0 / 0.1),
+          0 0.125rem 0.25rem -0.125rem rgb(0 0 0 / 0.1);
       }
     }
 
-    .nav_inner {
-      width: 100%;
-      max-width: var(--max-width-main);
+    .nav_wrap.pages {
+      position: static;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0 var(--space-6);
+      padding: 0.5rem 2rem;
     }
 
-    /* Bar height */
-    .nav_logo,
-    .nav_toggle {
-      min-height: var(--nav-height);
+    .nav_inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 80rem;
+      margin-inline: auto;
+      padding-inline: 1rem;
+
+      @media (width >= 40rem) {
+        padding-inline: 1.5rem;
+      }
+
+      @media (width >= 64rem) {
+        padding-inline: 2rem;
+      }
     }
 
     .nav_logo {
+      flex-shrink: 0;
+      width: 7.8125rem;
+    }
+
+    .nav_desktop {
+      display: none;
+      align-items: center;
+      gap: 2rem;
+
+      @media (width >= 48rem) {
+        display: flex;
+      }
+    }
+
+    .nav_links {
       display: flex;
       align-items: center;
-      width: 7.5rem;
-      transition: opacity var(--hover-duration) var(--hover-ease);
+      gap: 2rem;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav_link {
+      position: relative;
+      font-size: 1.125rem;
+      font-weight: var(--primary-medium);
+      line-height: 1.75rem;
+      letter-spacing: 0.025em;
+      text-transform: uppercase;
+      transition: color 300ms;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -0.25rem;
+        left: 0;
+        width: 0;
+        height: 0.125rem;
+        background-color: var(--brand-500);
+        transition: width 300ms;
+      }
+
       @media (hover: hover) {
         &:hover {
-          opacity: 0.6;
+          color: var(--brand-500);
+
+          &::after {
+            width: 100%;
+          }
         }
       }
     }
 
     .nav_toggle {
-      --_icon-width: 1.5rem;
-      --_bar-gap: 0.5rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 2.75rem;
-      margin-right: calc((2.75rem - var(--_icon-width)) / -2);
-      color: inherit;
-      border-radius: var(--radius-small);
-      transition: opacity var(--hover-duration) var(--hover-ease);
-      @media (hover: hover) {
-        &:hover {
-          opacity: 0.6;
-        }
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      color: var(--brand-500);
+
+      @media (width >= 48rem) {
+        display: none;
       }
     }
 
     .nav_toggle_icon {
       position: relative;
       display: block;
-      width: var(--_icon-width);
-      height: calc(var(--_bar-gap) + var(--border-width));
-      &::before,
-      &::after {
-        content: "";
+      width: 1.5rem;
+      height: 1.25rem;
+
+      & span {
         position: absolute;
-        inset-inline: 0;
-        height: var(--border-width);
-        background-color: currentcolor;
-        transition: transform var(--open-duration) var(--open-ease);
+        left: 0;
+        width: 1.5rem;
+        height: 0.125rem;
+        background-color: var(--brand-500);
+        transition:
+          transform 300ms ease-in-out,
+          opacity 300ms ease-in-out,
+          top 300ms ease-in-out;
       }
-      &::before {
+
+      & span:nth-child(1) {
         top: 0;
       }
-      &::after {
-        top: var(--_bar-gap);
+
+      & span:nth-child(2) {
+        top: 0.5rem;
+      }
+
+      & span:nth-child(3) {
+        top: 1rem;
       }
     }
 
-    .nav_wrap.open .nav_toggle_icon {
-      &::before {
-        transform: translateY(calc(var(--_bar-gap) / 2)) rotate(45deg);
+    .nav_wrap.is-open .nav_toggle_icon {
+      & span:nth-child(1) {
+        top: 0.5rem;
+        transform: rotate(45deg);
       }
-      &::after {
-        transform: translateY(calc(var(--_bar-gap) / -2)) rotate(-45deg);
+
+      & span:nth-child(2) {
+        opacity: 0;
+      }
+
+      & span:nth-child(3) {
+        top: 0.5rem;
+        transform: rotate(-45deg);
       }
     }
 
     .nav_menu {
       position: absolute;
-      top: 100%;
-      inset-inline: 0;
-      display: grid;
-      grid-template-rows: 0fr;
-      visibility: hidden;
-      max-height: calc(100svh - var(--nav-height));
-      overflow-x: clip;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      background-color: var(--background);
-      border-bottom: var(--border-width) solid var(--border);
-      transition:
-        grid-template-rows var(--open-duration) var(--open-ease),
-        visibility var(--open-duration) var(--open-ease);
-    }
-
-    .nav_menu_inner {
+      inset: 100% 0 auto;
+      max-height: 0;
+      background-color: #3c3b3b;
+      border-top: 0.0625rem solid var(--brand-500);
+      box-shadow:
+        0 0.625rem 0.9375rem -0.1875rem rgb(0 0 0 / 0.1),
+        0 0.25rem 0.375rem -0.25rem rgb(0 0 0 / 0.1);
       overflow: hidden;
-      opacity: 0;
-      transition: opacity var(--open-duration) var(--open-ease);
-    }
+      transition: max-height 300ms ease-in-out;
 
-    .nav_wrap.open .nav_menu {
-      grid-template-rows: 1fr;
-      visibility: visible;
-    }
-
-    .nav_wrap.open .nav_menu_inner {
-      opacity: 1;
-      overflow-y: auto;
-    }
-
-    .nav_links {
-      display: flex;
-      flex-direction: column;
-      padding: var(--space-2) var(--site-margin) var(--space-4);
-      font-size: var(--text-main);
-      font-weight: var(--primary-medium);
-      & > li + li {
-        border-top: var(--border-width) solid var(--border);
-      }
-    }
-
-    .nav_link {
-      display: block;
-      padding-block: var(--space-3);
-      color: color-mix(in lab, currentcolor 60%, transparent);
-      text-decoration: none;
-      text-underline-offset: 0.4em;
-      text-decoration-thickness: var(--border-width);
-      transition: color var(--hover-duration) var(--hover-ease);
-      &[aria-current="page"] {
-        color: var(--text);
-      }
-      @media (hover: hover) {
-        &:hover {
-          color: var(--text);
-        }
-      }
-    }
-
-    @media (width >= 48rem) {
-      .nav_toggle {
+      @media (width >= 48rem) {
         display: none;
       }
+    }
 
-      .nav_menu {
-        position: static;
-        display: block;
-        visibility: visible;
-        background-color: transparent;
-        border-bottom: 0;
+    .nav_wrap.is-open .nav_menu {
+      max-height: 24rem;
+      border-bottom: 0.0625rem solid var(--brand-500);
+    }
+
+    .nav_menu_links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.5rem 1.5rem 1rem;
+      list-style: none;
+    }
+
+    .nav_menu_link {
+      display: block;
+      padding-block: 0.5rem;
+      font-size: 1.5625rem;
+      font-weight: var(--primary-medium);
+      transition: color 300ms;
+
+      & span {
+        padding-bottom: 0.25rem;
+        border-bottom: 0.0625rem solid transparent;
+        transition: border-color 300ms;
       }
 
-      .nav_menu_inner {
-        display: flex;
-        align-items: center;
-        gap: var(--space-6);
-        overflow: visible;
-        opacity: 1;
-      }
+      @media (hover: hover) {
+        &:hover {
+          color: var(--brand-500);
 
-      .nav_links {
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        padding: 0;
-        gap: var(--space-4);
-        font-size: var(--text-small);
-        & > li + li {
-          border-top: 0;
+          & span {
+            border-color: var(--brand-500);
+          }
         }
       }
+    }
 
-      .nav_link {
-        padding-block: 0;
-        &[aria-current="page"] {
-          text-decoration: underline;
-        }
-      }
+    .nav_menu .locale-switcher_wrap {
+      padding: 0 1.5rem 1.5rem;
     }
   }
 </style>

@@ -1,0 +1,120 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = (HTMLAttributes<"a"> & HTMLAttributes<"button">) & {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Link destination. Renders a button when omitted. */
+  href?: string;
+};
+
+const { render = true, href, class: className, ...rest } = Astro.props;
+
+const Tag = href ? "a" : "button";
+---
+
+{render && (
+  <Tag class:list={["gold-button_wrap", className]} href={href} {...rest}>
+    <span class="gold-button_shine" />
+    <span class="gold-button_label">
+      <slot />
+    </span>
+    <span class="gold-button_corner top-left" />
+    <span class="gold-button_corner top-right" />
+    <span class="gold-button_corner bottom-left" />
+    <span class="gold-button_corner bottom-right" />
+  </Tag>
+)}
+
+<style is:global>
+  @layer components {
+    .gold-button_wrap {
+      position: relative;
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      background: linear-gradient(45deg, #3b3a3a, #6f6d6b);
+      color: var(--light-100);
+      border: 0.125rem solid var(--brand-500);
+      border-radius: 624.9375rem;
+      font-size: 1.125rem;
+      font-weight: var(--primary-medium);
+      line-height: 1.75rem;
+      text-decoration: none;
+      vertical-align: top;
+      overflow: hidden;
+      cursor: pointer;
+      transition:
+        transform 300ms,
+        box-shadow 300ms;
+
+      @media (hover: hover) {
+        &:hover:not(:disabled) {
+          transform: scale(1.05);
+          box-shadow:
+            0 0.5rem 1.25rem rgb(0 0 0 / 0.2),
+            0 0 0.9375rem var(--brand-500);
+
+          & .gold-button_shine {
+            opacity: 0.2;
+          }
+        }
+      }
+
+      &:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      &:disabled {
+        cursor: default;
+      }
+    }
+
+    .gold-button_shine {
+      position: absolute;
+      inset: 0;
+      background: var(--gold-gradient);
+      opacity: 0;
+      transition: opacity 300ms;
+    }
+
+    .gold-button_label {
+      position: relative;
+      z-index: 1;
+    }
+
+    .gold-button_corner {
+      position: absolute;
+      width: 0.75rem;
+      height: 0.75rem;
+      border: 0 solid var(--brand-500);
+
+      &.top-left {
+        top: 0;
+        left: 0;
+        border-top-width: 0.125rem;
+        border-left-width: 0.125rem;
+      }
+
+      &.top-right {
+        top: 0;
+        right: 0;
+        border-top-width: 0.125rem;
+        border-right-width: 0.125rem;
+      }
+
+      &.bottom-left {
+        bottom: 0;
+        left: 0;
+        border-bottom-width: 0.125rem;
+        border-left-width: 0.125rem;
+      }
+
+      &.bottom-right {
+        right: 0;
+        bottom: 0;
+        border-right-width: 0.125rem;
+        border-bottom-width: 0.125rem;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,338 @@
+---
+import { getCollection } from "astro:content";
+import SectionTitle from "@/components/content/SectionTitle.astro";
+import GoldButton from "@/components/content/GoldButton.astro";
+import { localizePath, toLocale } from "@/i18n/locales.ts";
+import { getMessages } from "@/i18n/messages.ts";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+}
+
+const { render = true } = Astro.props;
+
+const locale = toLocale(Astro.currentLocale);
+const m = getMessages(locale);
+const home = localizePath(locale);
+
+const amount = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
+
+const houses = (await getCollection("houses")).sort(
+  (a, b) => a.data.number - b.data.number,
+);
+
+const details = [
+  { icon: "🏦", title: m.deposit, text: m.depositAmount },
+  { icon: "📅", title: m.shortTermRental, text: m.shortTermPrice },
+  { icon: "📐", title: m.area, text: m.areaSize },
+  { icon: "📶", title: m.internet, text: m.internetDescription },
+  { icon: "🏠", title: m.furnishing, text: m.furnishingDescription },
+  {
+    icon: "🔋",
+    title: m.photovoltaic,
+    text: `${m.electricCharging}, ${m.electricMeter}`,
+  },
+];
+---
+
+{render && (
+  <section class="prices_wrap page-section" id="prices">
+    <div class="page-container prices_container">
+      <SectionTitle title={m.pricesTitle} text={m.pricesDescription} tight />
+
+      <ul class="prices_units">
+        {houses.map((house, index) => (
+          <li
+            class="prices_unit"
+            data-reveal="scale"
+            style={`--reveal-delay: ${0.2 + index * 0.15}s`}
+          >
+            <h3 class="prices_unit_name">
+              {m.unitName} {house.data.number}
+            </h3>
+            <span class="prices_unit_rule" />
+            <div class="prices_unit_box">
+              <p class="prices_unit_label">{m.rentPrice}</p>
+              <p class="prices_unit_rent">
+                €{amount.format(house.data.rent)}
+                <span> netto</span>
+              </p>
+            </div>
+            <div class="prices_unit_box">
+              <p class="prices_unit_label">{m.energyCost}</p>
+              <p class="prices_unit_energy">
+                €{amount.format(house.data.energy)}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="prices_details">
+        <h3 class="prices_details_title" data-reveal="up">
+          {m.features}
+        </h3>
+        <ul class="prices_details_list">
+          {details.map((detail, index) => (
+            <li
+              class="prices_detail"
+              data-reveal="up"
+              style={`--reveal-delay: ${0.2 + index * 0.1}s`}
+            >
+              <span class="prices_detail_icon" aria-hidden="true">
+                {detail.icon}
+              </span>
+              <h4 class="prices_detail_title">{detail.title}</h4>
+              <p class="prices_detail_text">{detail.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="prices_cta" data-reveal="up">
+        <p class="prices_cta_text">{m.contactForDetails}</p>
+        <GoldButton href={`${home}#contact`}>Kontakt</GoldButton>
+      </div>
+    </div>
+  </section>
+)}
+
+<style is:global>
+  @layer components {
+    .prices_container {
+      padding-inline: 1rem;
+    }
+
+    .prices_units {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin: 0 1rem 4rem;
+      padding: 0;
+      list-style: none;
+
+      @media (width >= 48rem) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (width >= 64rem) {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    .prices_unit {
+      position: relative;
+      padding: 1.5rem;
+      background: rgb(255 255 255 / 0.05);
+      border: 0.125rem solid rgb(212 175 55 / 0.3);
+      border-radius: 0.75rem;
+      text-align: center;
+      overflow: hidden;
+      backdrop-filter: blur(0.25rem);
+
+      @media (width >= 64rem) {
+        padding: 2rem;
+      }
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        height: 0.25rem;
+        background: var(--gold-gradient);
+      }
+
+      &::after {
+        inset: auto 0 0;
+        opacity: 0;
+        transition: opacity 300ms;
+      }
+
+      @media (hover: hover) {
+        &.is-revealed {
+          transition:
+            transform 300ms,
+            box-shadow 300ms,
+            border-color 300ms;
+          transition-delay: 0s;
+        }
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgb(212 175 55 / 0.1),
+            rgb(255 255 255 / 0.05)
+          );
+          border-color: var(--brand-500);
+          transform: translateY(-0.625rem) scale(1.02);
+          box-shadow:
+            0 1.25rem 2.5rem rgb(0 0 0 / 0.3),
+            0 0 1.25rem var(--brand-500);
+
+          &::after {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    .prices_unit_name {
+      margin-bottom: 0.5rem;
+      color: var(--brand-500);
+      font-size: 1.5rem;
+      font-weight: var(--primary-bold);
+      line-height: 2rem;
+
+      @media (width >= 64rem) {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+      }
+    }
+
+    .prices_unit_rule {
+      display: block;
+      width: 3rem;
+      height: 0.125rem;
+      margin: 0 auto 1.5rem;
+      background: var(--gold-gradient);
+    }
+
+    .prices_unit_box {
+      padding: 1rem;
+      background-color: rgb(255 255 255 / 0.1);
+      border: 0.0625rem solid rgb(255 255 255 / 0.2);
+      border-radius: var(--radius-main);
+
+      & + & {
+        margin-top: 1rem;
+      }
+    }
+
+    .prices_unit_label {
+      margin-bottom: 0.25rem;
+      color: rgb(255 255 255 / 0.8);
+      font-size: 0.875rem;
+      font-weight: 200;
+      line-height: 1.25rem;
+    }
+
+    .prices_unit_rent,
+    .prices_unit_energy {
+      font-weight: var(--primary-bold);
+    }
+
+    .prices_unit_rent {
+      font-size: 1.5rem;
+      line-height: 2rem;
+
+      @media (width >= 64rem) {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+      }
+
+      & span {
+        color: rgb(255 255 255 / 0.7);
+        font-size: 1.125rem;
+        font-weight: var(--primary-regular);
+        line-height: 1.75rem;
+      }
+    }
+
+    .prices_unit_energy {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+
+      @media (width >= 64rem) {
+        font-size: 1.5rem;
+        line-height: 2rem;
+      }
+    }
+
+    .prices_details {
+      margin-inline: 1rem;
+      padding: 1.5rem;
+      background-color: rgb(255 255 255 / 0.05);
+      border: 0.0625rem solid rgb(255 255 255 / 0.2);
+      border-radius: 0.75rem;
+      box-shadow: 0 0.5rem 2rem rgb(0 0 0 / 0.2);
+      backdrop-filter: blur(0.25rem);
+
+      @media (width >= 64rem) {
+        padding: 2rem;
+      }
+    }
+
+    .prices_details_title {
+      margin-bottom: 2rem;
+      color: var(--brand-500);
+      font-size: 1.5rem;
+      font-weight: var(--primary-bold);
+      line-height: 2rem;
+      text-align: center;
+
+      @media (width >= 64rem) {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+      }
+    }
+
+    .prices_details_list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 0;
+      list-style: none;
+
+      @media (width >= 48rem) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (width >= 64rem) {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    .prices_detail {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .prices_detail_icon {
+      display: block;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+
+    .prices_detail_title {
+      margin-bottom: 0.5rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.75rem;
+    }
+
+    .prices_detail_text {
+      font-size: 1.09375rem;
+      line-height: 1.5;
+    }
+
+    .prices_cta {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .prices_cta_text {
+      margin: 0 1rem 2rem;
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+
+      @media (width >= 64rem) {
+        font-size: 1.25rem;
+      }
+    }
+  }
+</style>
