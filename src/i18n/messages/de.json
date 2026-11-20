@@ -77,7 +77,6 @@
   "contactInformation": "Kontaktinformationen",
   "address": "Adresse",
   "austria": "Österreich",
-  "contactTitle": "Kontakt",
   "contactName": "Name",
   "contactSubject": "Betreff",
   "contactEmail": "Ihre E-Mail",
@@ -117,6 +116,7 @@
   "factHouses": "Häuser",
   "factMinutes": "Min.",
   "perMonth": "pro Monat",
+  "contactTitle": "Kontakt",
   "founderName": "Ing. Ľuboš Dzuriak",
   "plansOpen": "PDF öffnen",
   "email": "E-Mail"

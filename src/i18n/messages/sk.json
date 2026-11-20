@@ -1,5 +1,5 @@
 {
-  "navProject": "Projekt",
+  "navProject": "Projekt1",
   "navAboutUs": "O nás",
   "navPrices": "Ceny",
   "navContact": "Kontakt",
@@ -78,8 +78,8 @@
   "address": "Adresa",
   "austria": "Rakúsko",
   "contactName": "Vaše Meno",
-  "contactEmail": "Váš e-mail",
   "contactSubject": "Predmet",
+  "contactEmail": "Váš e-mail",
   "contactPhone": "Telefón",
   "contactMessage": "Vaša vízia",
   "contactAgree": "Údaje z formulára použijeme len na odpoveď na vašu správu. Viac v",
