@@ -2,6 +2,7 @@ backend:
   name: github
   repo: pkvarg/d7quattro2
   branch: main
+  base_url: https://sveltia-cms-auth.pictusr2usage.workers.dev
 
 media_folder: public/uploads
 public_folder: /uploads
