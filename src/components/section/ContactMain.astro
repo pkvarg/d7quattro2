@@ -167,7 +167,7 @@ const subjects = {
                   </svg>
                 </span>
                 <div>
-                  <p class="contact_info_label">Email</p>
+                  <p class="contact_info_label">{m.email}</p>
                   <a class="contact_info_value" href="mailto:info@d7quattro.at">
                     info@d7quattro.at
                   </a>
@@ -479,6 +479,8 @@ const subjects = {
     }
 
     .contact_info_value {
+      display: inline-block;
+      padding-block: 0.25rem;
       font-style: normal;
       line-height: 1.5;
       transition: color 150ms;

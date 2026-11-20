@@ -58,11 +58,15 @@ const year = new Date().getFullYear();
   @layer components {
     .footer_wrap {
       position: relative;
-      padding-block: 3rem;
+      padding-block: 3rem 5.5rem;
       background-color: var(--dark-900);
       color: var(--light-100);
       font-size: 1.21875rem;
       font-weight: 200;
+
+      @media (width >= 48rem) {
+        padding-block: 3rem;
+      }
 
       @media (width >= 64rem) {
         padding-block: 4rem;
@@ -118,7 +122,7 @@ const year = new Date().getFullYear();
       max-width: 75%;
       margin-bottom: 2rem;
       color: rgb(255 255 255 / 0.9);
-      font-family: "Alex Brush", cursive;
+      font-family: var(--script-family);
       font-size: 1.875rem;
       font-style: italic;
       font-weight: 400;
@@ -198,6 +202,8 @@ const year = new Date().getFullYear();
     .footer_link {
       position: relative;
       display: block;
+      margin-block: -0.375rem;
+      padding-block: 0.375rem;
       color: rgb(255 255 255 / 0.6);
       font: inherit;
       font-size: 0.875rem;
@@ -208,7 +214,7 @@ const year = new Date().getFullYear();
       &::after {
         content: "";
         position: absolute;
-        bottom: -0.25rem;
+        bottom: 0.125rem;
         left: 0;
         width: 0;
         height: 0.0625rem;

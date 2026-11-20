@@ -1,6 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import aerial from "@/assets/images/location-aerial.jpg";
+import { toLocale } from "@/i18n/locales.ts";
+import { getMessages } from "@/i18n/messages.ts";
 
 interface Props {
   /** Set to `false` to omit the component. */
@@ -11,7 +13,8 @@ interface Props {
 
 const { render = true, label } = Astro.props;
 
-const address = "Edelhofgasse, Wolfsthal, 2412 Austria";
+const m = getMessages(toLocale(Astro.currentLocale));
+const address = `Edelhofgasse, Wolfsthal, 2412 ${m.austria}`;
 const href = "https://www.google.com/maps?q=48.133239,16.999667";
 ---
 
@@ -26,7 +29,7 @@ const href = "https://www.google.com/maps?q=48.133239,16.999667";
       <Image
         class="location-map_image"
         src={aerial}
-        alt="Map location"
+        alt={m.locationTitle}
         widths={[480, 800, 1344]}
         sizes="(width >= 64rem) 42rem, 100vw"
       />
@@ -100,7 +103,7 @@ const href = "https://www.google.com/maps?q=48.133239,16.999667";
     .location-map_image {
       width: 100%;
       height: 24rem;
-      object-fit: fill;
+      object-fit: cover;
 
       @media (width >= 64rem) {
         height: 27rem;

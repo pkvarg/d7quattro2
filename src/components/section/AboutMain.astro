@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import SectionTitle from "@/components/content/SectionTitle.astro";
 import homeImage from "@/assets/images/exterior/exterior-2.webp";
-import founderImage from "@/assets/images/founder.jpeg";
 import { toLocale } from "@/i18n/locales.ts";
 import { getMessages } from "@/i18n/messages.ts";
 
@@ -14,6 +13,12 @@ interface Props {
 const { render = true } = Astro.props;
 
 const m = getMessages(toLocale(Astro.currentLocale));
+
+const founderInitials = m.founderName
+  .split(" ")
+  .filter((word) => !word.endsWith("."))
+  .map((word) => word.charAt(0))
+  .join("");
 ---
 
 {render && (
@@ -27,7 +32,7 @@ const m = getMessages(toLocale(Astro.currentLocale));
             <div class="about_frame_inner">
               <Image
                 src={homeImage}
-                alt="Luxury Home"
+                alt="D7 Quattro"
                 widths={[480, 800, 1200]}
                 sizes="(width >= 64rem) 36rem, 100vw"
               />
@@ -59,12 +64,7 @@ const m = getMessages(toLocale(Astro.currentLocale));
           </div>
           <div class="about_founder">
             <div class="about_founder_photo">
-              <Image
-                src={founderImage}
-                alt="Founder"
-                width={128}
-                height={128}
-              />
+              <span aria-hidden="true">{founderInitials}</span>
             </div>
             <div>
               <p class="about_founder_name">{m.founderName}</p>
@@ -245,9 +245,17 @@ const m = getMessages(toLocale(Astro.currentLocale));
       border-radius: 50%;
       overflow: hidden;
 
-      & img {
+      & span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 100%;
+        background-color: var(--dark-900);
+        color: var(--brand-500);
         border-radius: 50%;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
       }
 
       @media (prefers-reduced-motion: no-preference) {
