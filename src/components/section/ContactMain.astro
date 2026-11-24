@@ -260,7 +260,9 @@ const subjects = {
 
       submit.disabled = false;
       label.textContent = idle;
-      section.scrollIntoView({ behavior: "smooth" });
+      section
+        .querySelector<HTMLElement>(`.contact_note.${section.dataset.state}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
   }
 </script>
@@ -303,17 +305,21 @@ const subjects = {
 
     .contact_note {
       display: none;
-      margin: 3rem 0 1rem;
+      margin: 3rem 1rem 1rem;
       padding-inline: 1rem;
+      padding-block: 1rem;
+      background-color: color-mix(in srgb, var(--_tone) 16%, transparent);
+      color: color-mix(in lab, var(--_tone) 70%, white);
+      border: 0.0625rem solid var(--_tone);
       font-size: 1.5625rem;
       line-height: 1.5;
 
       &.sent {
-        color: #16a34a;
+        --_tone: #45c486;
       }
 
       &.failed {
-        color: #ef4444;
+        --_tone: #e8675c;
       }
     }
 
