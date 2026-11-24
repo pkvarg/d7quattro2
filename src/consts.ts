@@ -15,4 +15,4 @@ export const NOINDEX_ROUTES: string[] = [
 /** Umami tracker script. Loaded only after the visitor accepts measurement. */
 export const ANALYTICS_SRC = "https://analytics.pictusweb.com/script.js";
 /** Umami website ID for this site. */
-export const ANALYTICS_WEBSITE_ID = "356f16bf-27a7-4110-93a8-c2b381de85fb";
+export const ANALYTICS_WEBSITE_ID = "e569ef9d-e5b9-4220-bba6-f9ecf701d987";
