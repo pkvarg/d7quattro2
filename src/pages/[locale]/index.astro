@@ -100,7 +100,12 @@ const subjects = {
 };
 ---
 
-<Layout title={m.heroTitle} overlap={true}>
+<Layout
+  title={m.heroTitle}
+  socialTitle={m.ogTitle}
+  socialDescription={m.ogDescription}
+  overlap={true}
+>
   <HeroHome
     kicker={m.heroTitle}
     heading={`${m.heroSubtitle1} ${m.heroSubtitle2}`}
