@@ -6,7 +6,7 @@ import PricesMain from "@/components/section/PricesMain.astro";
 import AboutMain from "@/components/section/AboutMain.astro";
 import ContactMain from "@/components/section/ContactMain.astro";
 import heroImage from "@/assets/images/hero.webp";
-import { LOCALES, localizePath, toLocale } from "@/i18n/locales.ts";
+import { LOCALES, toLocale } from "@/i18n/locales.ts";
 import { getMessages } from "@/i18n/messages.ts";
 
 export function getStaticPaths() {
@@ -32,8 +32,6 @@ const contactApi =
     heading={m.heroSubtitle1}
     headingAccent={m.heroSubtitle2}
     lines={[m.heroDescription1, m.heroDescription2]}
-    buttonLabel={m.contactButton}
-    buttonHref={`${localizePath(locale)}#contact`}
     image={heroImage}
   />
   <!-- Project -->
