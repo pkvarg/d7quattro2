@@ -88,6 +88,40 @@ const links = [
 )}
 
 <script>
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    const link = event.target.closest<HTMLAnchorElement>('a[href*="#"]');
+    if (!link) return;
+
+    const url = new URL(link.href);
+    const samePage =
+      url.origin === location.origin && url.pathname === location.pathname;
+    const target = document.getElementById(
+      decodeURIComponent(url.hash.slice(1)),
+    );
+    if (!samePage || !target || target instanceof HTMLDialogElement) return;
+
+    event.preventDefault();
+    target.scrollIntoView();
+    if (target.hasAttribute("tabindex")) target.focus({ preventScroll: true });
+  });
+
+  if (location.hash) {
+    const settle = () => {
+      const target = document.getElementById(
+        decodeURIComponent(location.hash.slice(1)),
+      );
+      history.replaceState(
+        history.state,
+        "",
+        location.pathname + location.search,
+      );
+      target?.scrollIntoView({ behavior: "instant" });
+    };
+    if (document.readyState === "complete") settle();
+    else addEventListener("load", settle);
+  }
+
   const nav = document.querySelector<HTMLElement>(".nav_wrap");
   const toggle = nav?.querySelector<HTMLButtonElement>(".nav_toggle");
   const menu = nav?.querySelector<HTMLElement>(".nav_menu");
