@@ -39,8 +39,6 @@ export const privacy: Record<string, LegalText> = {
           "Notwendig (ohne Einwilligung):",
           [
             "CookieConsent – speichert Ihre Auswahl in der Cookie-Leiste, 365 Tage",
-            "NEXT_LOCALE – speichert die gewählte Sprache",
-            "Anmelde-Cookies der Administration – nur für Administratoren",
           ],
           "Besucherstatistik (nur mit Ihrer Einwilligung): Umami, ein datenschutzfreundliches Statistik-Tool auf einem Server in Deutschland (Contabo GmbH), betrieben von Pictusweb s.r.o. Es verwendet keine Cookies, speichert keine IP-Adressen und erstellt keine Nutzerprofile; sichtbar sind nur zusammengefasste Zahlen. Es startet erst nach Klick auf „Zustimmen“. Lehnen Sie ab, merkt sich Ihr Browser dies (umami.disabled). Bei Ihrer ersten Auswahl wird außerdem ein anonymer Besuchszähler erhöht.",
           "Schriften werden von dieser Website geladen, nicht von Google. Die Karte öffnet Google Maps erst, wenn Sie darauf klicken. Wir verwenden keine Werbe- oder Tracking-Cookies.",
@@ -54,7 +52,6 @@ export const privacy: Record<string, LegalText> = {
           "Wir verkaufen Ihre Daten nicht und nutzen sie nicht für Werbung. Zugriff haben nur diese Dienstleister, soweit es für ihre Leistung nötig ist:",
           [
             "Pictusweb s.r.o., Nábrežná 4895/42, 940 02 Nové Zámky, Slowakei – Entwicklung und Betrieb der Website, Versand der E-Mails aus dem Formular, Besucherstatistik",
-            "Root Localhost LLC – Hosting der Website (Server in Prag, Tschechien)",
             "Cloudflare, Inc. – Auslieferung der Website und Schutz vor Angriffen",
             "Contabo GmbH (Deutschland) – Server für den E-Mail-Versand und die Besucherstatistik",
             "Hostinger / Titan Mail – E-Mail-Postfach info@d7quattro.at",
@@ -65,7 +62,7 @@ export const privacy: Record<string, LegalText> = {
         id: "drittland",
         title: "6. Übermittlung in Drittländer",
         body: [
-          "Cloudflare, Titan Mail und Root Localhost LLC haben ihren Sitz oder Muttergesellschaften außerhalb der EU (insbesondere in den USA). Eine Übermittlung erfolgt nur mit geeigneten Garantien nach Kapitel V DSGVO – auf Grundlage des EU-U.S. Data Privacy Framework oder der Standardvertragsklauseln der Europäischen Kommission.",
+          "Cloudflare und Titan Mail haben ihren Sitz oder Muttergesellschaften außerhalb der EU (insbesondere in den USA). Eine Übermittlung erfolgt nur mit geeigneten Garantien nach Kapitel V DSGVO – auf Grundlage des EU-U.S. Data Privacy Framework oder der Standardvertragsklauseln der Europäischen Kommission.",
         ],
       },
       {
@@ -120,11 +117,7 @@ export const privacy: Record<string, LegalText> = {
         title: "4. Cookies a meranie návštevnosti",
         body: [
           "Nevyhnutné (bez súhlasu):",
-          [
-            "CookieConsent – zapamätá si vašu voľbu v lište cookies, 365 dní",
-            "NEXT_LOCALE – zapamätá si zvolený jazyk",
-            "prihlasovacie cookies administrácie – len pre správcov webu",
-          ],
+          ["CookieConsent – zapamätá si vašu voľbu v lište cookies, 365 dní"],
           "Meranie návštevnosti (len s vaším súhlasom): Umami – nástroj na meranie návštevnosti na serveri v Nemecku (Contabo GmbH), ktorý prevádzkuje Pictusweb s.r.o. Nepoužíva cookies, neukladá IP adresu a nevytvára profil návštevníka; vidno len súhrnné štatistiky. Spustí sa až po kliknutí na „Súhlasím“. Ak meranie odmietnete, prehliadač si to zapamätá (umami.disabled). Pri prvej voľbe sa tiež pripočíta návšteva do anonymného počítadla.",
           "Písma sa načítavajú z tohto webu, nie od Google. Mapa otvorí Google Maps až po kliknutí. Nepoužívame reklamné ani sledovacie cookies.",
           "Súhlas môžete kedykoľvek zmeniť alebo odvolať odkazom „Nastavenia cookies“ v pätičke webu (§ 165 ods. 3 rakúskeho zákona TKG 2021).",
@@ -137,7 +130,6 @@ export const privacy: Record<string, LegalText> = {
           "Údaje nepredávame ani nepoužívame na reklamu. Prístup majú len títo poskytovatelia, v rozsahu potrebnom pre ich službu:",
           [
             "Pictusweb s.r.o., Nábrežná 4895/42, 940 02 Nové Zámky, Slovensko – vývoj a prevádzka webu, odosielanie e-mailov z formulára, meranie návštevnosti",
-            "Root Localhost LLC – hosting webu (server v Prahe, Česko)",
             "Cloudflare, Inc. – doručovanie webu a ochrana pred útokmi",
             "Contabo GmbH (Nemecko) – server na odosielanie e-mailov a meranie návštevnosti",
             "Hostinger / Titan Mail – e-mailová schránka info@d7quattro.at",
@@ -148,7 +140,7 @@ export const privacy: Record<string, LegalText> = {
         id: "drittland",
         title: "6. Prenos údajov mimo EÚ",
         body: [
-          "Cloudflare, Titan Mail a Root Localhost LLC majú sídlo alebo materskú spoločnosť mimo EÚ (najmä v USA). Prenos sa uskutočňuje len s primeranými zárukami podľa kapitoly V GDPR – na základe rámca EÚ – USA na ochranu osobných údajov (EU-U.S. Data Privacy Framework) alebo štandardných zmluvných doložiek Európskej komisie.",
+          "Cloudflare a Titan Mail majú sídlo alebo materskú spoločnosť mimo EÚ (najmä v USA). Prenos sa uskutočňuje len s primeranými zárukami podľa kapitoly V GDPR – na základe rámca EÚ – USA na ochranu osobných údajov (EU-U.S. Data Privacy Framework) alebo štandardných zmluvných doložiek Európskej komisie.",
         ],
       },
       {
@@ -203,11 +195,7 @@ export const privacy: Record<string, LegalText> = {
         title: "4. Cookies and visitor statistics",
         body: [
           "Necessary (no consent required):",
-          [
-            "CookieConsent – remembers your choice in the cookie bar, 365 days",
-            "NEXT_LOCALE – remembers the selected language",
-            "administration login cookies – for administrators only",
-          ],
+          ["CookieConsent – remembers your choice in the cookie bar, 365 days"],
           "Visitor statistics (only with your consent): Umami, a privacy-friendly analytics tool on a server in Germany (Contabo GmbH) operated by Pictusweb s.r.o. It uses no cookies, stores no IP addresses and builds no visitor profiles; only aggregate figures are visible. It starts only after you click “Accept”. If you decline, your browser remembers it (umami.disabled). Your first choice also adds one to an anonymous visit counter.",
           "Fonts are loaded from this website, not from Google. The map opens Google Maps only when you click it. No advertising or tracking cookies are used.",
           "You can change or withdraw your consent at any time via “Cookie settings” in the footer (Section 165(3) of the Austrian TKG 2021).",
@@ -220,7 +208,6 @@ export const privacy: Record<string, LegalText> = {
           "We do not sell your data or use it for advertising. Only these providers have access, to the extent their service requires:",
           [
             "Pictusweb s.r.o., Nábrežná 4895/42, 940 02 Nové Zámky, Slovakia – development and operation of the website, sending form e-mails, visitor statistics",
-            "Root Localhost LLC – website hosting (server in Prague, Czech Republic)",
             "Cloudflare, Inc. – website delivery and attack protection",
             "Contabo GmbH (Germany) – server for sending e-mails and visitor statistics",
             "Hostinger / Titan Mail – the info@d7quattro.at mailbox",
@@ -231,7 +218,7 @@ export const privacy: Record<string, LegalText> = {
         id: "drittland",
         title: "6. Transfers outside the EU",
         body: [
-          "Cloudflare, Titan Mail and Root Localhost LLC are based, or have parent companies, outside the EU (mainly in the USA). Transfers take place only with appropriate safeguards under Chapter V GDPR – the EU-U.S. Data Privacy Framework or the European Commission’s standard contractual clauses.",
+          "Cloudflare and Titan Mail are based, or have parent companies, outside the EU (mainly in the USA). Transfers take place only with appropriate safeguards under Chapter V GDPR – the EU-U.S. Data Privacy Framework or the European Commission’s standard contractual clauses.",
         ],
       },
       {
