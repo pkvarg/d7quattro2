@@ -251,15 +251,14 @@
   color: var(--light-100);
   font-weight: var(--primary-medium);
   overflow: hidden;
-  scroll-margin-top: 4rem;
+  scroll-margin-top: 4.25rem;
 
   @media (width >= 48rem) {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 4.5625rem;
   }
 
   @media (width >= 64rem) {
     padding-block: 6.25rem 6rem;
-    scroll-margin-top: 6rem;
 
     &::before {
       content: "";
