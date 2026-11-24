@@ -5,6 +5,8 @@ import SkipLink from "@/components/global/SkipLink.astro";
 import Nav from "@/components/global/Nav.astro";
 import Footer from "@/components/global/Footer.astro";
 import CookieConsent from "@/components/global/CookieConsent.astro";
+import ConstructionNotice from "@/components/global/ConstructionNotice.astro";
+import { UNDER_CONSTRUCTION } from "@/consts.ts";
 import type { SeoProps } from "@/types.ts";
 import { toLocale, type Locale } from "@/i18n/locales.ts";
 
@@ -40,5 +42,6 @@ const locale = toLocale(Astro.currentLocale);
     </main>
     <Footer />
     <CookieConsent />
+    <ConstructionNotice render={UNDER_CONSTRUCTION} />
   </body>
 </html>

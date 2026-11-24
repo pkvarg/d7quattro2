@@ -1,0 +1,120 @@
+---
+import { toLocale, type Locale } from "@/i18n/locales.ts";
+
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+}
+
+const { render = true } = Astro.props;
+
+const locale = toLocale(Astro.currentLocale);
+
+const texts: Record<Locale, { notice: string; close: string }> = {
+  sk: {
+    notice: "Web je vo výstavbe – obsah sa ešte dopĺňa.",
+    close: "Zavrieť",
+  },
+  de: {
+    notice:
+      "Diese Website befindet sich im Aufbau – Inhalte werden noch ergänzt.",
+    close: "Schließen",
+  },
+  en: {
+    notice:
+      "This website is under construction – content is still being added.",
+    close: "Close",
+  },
+};
+---
+
+{render && (
+  <div class="construction-notice_wrap theme-dark" role="status" hidden>
+    <p class="construction-notice_text text-style-small">
+      {texts[locale].notice}
+    </p>
+    <button
+      class="construction-notice_close"
+      type="button"
+      aria-label={texts[locale].close}
+    >
+      ✕
+    </button>
+  </div>
+)}
+
+<script>
+  const KEY = "d7quattro-notice";
+  const notice = document.querySelector<HTMLElement>(
+    ".construction-notice_wrap",
+  );
+
+  if (notice) {
+    let dismissed = false;
+    try {
+      dismissed = sessionStorage.getItem(KEY) === "closed";
+    } catch {
+      dismissed = false;
+    }
+
+    notice.hidden = dismissed;
+
+    notice
+      .querySelector(".construction-notice_close")
+      ?.addEventListener("click", () => {
+        notice.hidden = true;
+        try {
+          sessionStorage.setItem(KEY, "closed");
+        } catch {
+          return;
+        }
+      });
+  }
+</script>
+
+<style is:global>
+  @layer components {
+    .construction-notice_wrap {
+      position: fixed;
+      bottom: var(--space-4);
+      left: var(--site-margin);
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      max-width: calc(100% - var(--site-margin) * 2);
+      padding: 0.25rem 0.25rem 0.25rem 1rem;
+      background-color: var(--background-2);
+      color: var(--brand-500);
+      border: var(--border-width) solid
+        color-mix(in srgb, var(--brand-500) 60%, transparent);
+
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    .construction-notice_text {
+      font-weight: var(--primary-medium);
+      text-box: none;
+    }
+
+    .construction-notice_close {
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      color: inherit;
+      text-align: center;
+      transition: background-color var(--hover-duration) var(--hover-ease);
+      @media (hover: hover) {
+        &:hover {
+          background-color: color-mix(
+            in srgb,
+            var(--brand-500) 16%,
+            transparent
+          );
+        }
+      }
+    }
+  }
+</style>

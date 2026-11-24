@@ -4,6 +4,8 @@ import { LOCALES } from "./i18n/locales.ts";
 export const SITE_NAME = "D7 Quattro";
 /** Canonical origin. Resolves canonical URLs, social images, and the sitemap. */
 export const SITE_URL = "https://astro.d7quattro.at";
+/** Shows the under-construction notice on every page. */
+export const UNDER_CONSTRUCTION = true;
 /** Routes excluded from search and the sitemap. Surrounding slashes are ignored. */
 export const NOINDEX_ROUTES: string[] = [
   "/404",
