@@ -52,6 +52,7 @@ export const privacy: Record<string, LegalText> = {
           "Wir verkaufen Ihre Daten nicht und nutzen sie nicht für Werbung. Zugriff haben nur diese Dienstleister, soweit es für ihre Leistung nötig ist:",
           [
             "Pictusweb s.r.o., Nábrežná 4895/42, 940 02 Nové Zámky, Slowakei – Entwicklung und Betrieb der Website, Versand der E-Mails aus dem Formular, Besucherstatistik",
+            "Hostinger – Hosting der Website",
             "Cloudflare, Inc. – Auslieferung der Website und Schutz vor Angriffen",
             "Contabo GmbH (Deutschland) – Server für den E-Mail-Versand und die Besucherstatistik",
             "Hostinger / Titan Mail – E-Mail-Postfach info@d7quattro.at",
@@ -130,6 +131,7 @@ export const privacy: Record<string, LegalText> = {
           "Údaje nepredávame ani nepoužívame na reklamu. Prístup majú len títo poskytovatelia, v rozsahu potrebnom pre ich službu:",
           [
             "Pictusweb s.r.o., Nábrežná 4895/42, 940 02 Nové Zámky, Slovensko – vývoj a prevádzka webu, odosielanie e-mailov z formulára, meranie návštevnosti",
+            "Hostinger – hosting webu",
             "Cloudflare, Inc. – doručovanie webu a ochrana pred útokmi",
             "Contabo GmbH (Nemecko) – server na odosielanie e-mailov a meranie návštevnosti",
             "Hostinger / Titan Mail – e-mailová schránka info@d7quattro.at",
@@ -208,6 +210,7 @@ export const privacy: Record<string, LegalText> = {
           "We do not sell your data or use it for advertising. Only these providers have access, to the extent their service requires:",
           [
             "Pictusweb s.r.o., Nábrežná 4895/42, 940 02 Nové Zámky, Slovakia – development and operation of the website, sending form e-mails, visitor statistics",
+            "Hostinger – website hosting",
             "Cloudflare, Inc. – website delivery and attack protection",
             "Contabo GmbH (Germany) – server for sending e-mails and visitor statistics",
             "Hostinger / Titan Mail – the info@d7quattro.at mailbox",
