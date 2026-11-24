@@ -117,6 +117,10 @@ const home = localizePath(locale);
 
 <style is:global>
   @layer components {
+    html {
+      scroll-behavior: smooth;
+    }
+
     :target {
       scroll-margin-top: calc(var(--nav-height) + var(--space-4));
     }
@@ -295,6 +299,8 @@ const home = localizePath(locale);
         position: static;
         display: block;
         visibility: visible;
+        max-height: none;
+        overflow: visible;
         background-color: transparent;
         border-bottom: 0;
       }
