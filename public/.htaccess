@@ -4,3 +4,9 @@ ErrorDocument 404 /404.html
   RewriteEngine On
   RewriteRule ^$ /sk/ [R=302,L]
 </IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
