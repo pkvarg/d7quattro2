@@ -198,6 +198,7 @@
   color: inherit;
   border: var(--border-width) solid transparent;
   border-radius: var(--radius-small);
+  text-box: none;
   transition:
     background-color var(--hover-duration) var(--hover-ease),
     border-color var(--hover-duration) var(--hover-ease);
