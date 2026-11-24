@@ -4,6 +4,10 @@ export interface SeoProps {
   title?: string;
   /** Page and social description. Defaults to the hero text of the page locale. */
   description?: string;
+  /** Title shown when the page is shared. Defaults to the page title. */
+  socialTitle?: string;
+  /** Text shown when the page is shared. Defaults to the description. */
+  socialDescription?: string;
   /** Social image. Defaults to `/og-image.jpg`. */
   image?: string;
   /** Open Graph type. */

@@ -27,6 +27,18 @@ collections:
           - { name: navAboutUs, label: navAboutUs, widget: string, i18n: true }
           - { name: navPrices, label: navPrices, widget: string, i18n: true }
           - { name: navContact, label: navContact, widget: string, i18n: true }
+          - {
+              name: ogTitle,
+              label: ogTitle (share title),
+              widget: string,
+              i18n: true,
+            }
+          - {
+              name: ogDescription,
+              label: ogDescription (share text),
+              widget: text,
+              i18n: true,
+            }
           - { name: heroTitle, label: heroTitle, widget: string, i18n: true }
           - {
               name: heroSubtitle1,
